@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Read — Tej Kumar Writings</title><link rel="stylesheet" href="style.css"><script defer src="script.js"></script></head>
+<body>
+<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img class="logo" src="assets/mr-romeo-cover.png" alt="logo"><div><h1>Tej Kumar Writings</h1></div></a></div></header>
+<main class="container">
+  <h2 id="titleBox">Loading...</h2>
+  <p id="authorBox" style="color:var(--muted)"></p>
+  <div id="readerArea" class="reader"><p style="color:var(--muted)">Loading book...</p></div>
+</main>
+<footer class="site-footer"><div class="container footer-inner">© <span id="year"></span> Tej Kumar Writings</div></footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+function getParam(k){ const p=new URLSearchParams(location.search); return p.get(k); }
+const id = getParam('id');
+const books = getBooks();
+const book = (id && books.find(b=>b.id===id)) || books[0];
+if(!book){ document.getElementById('titleBox').textContent='Book not found'; document.getElementById('readerArea').innerHTML=''; }
+else{
+  document.getElementById('titleBox').textContent = book.title;
+  document.getElementById('authorBox').textContent = 'by ' + book.author;
+  const logged = !!sessionStorage.getItem('tkw_session_v1');
+  if(book.pdf && book.pdf !== '#'){
+    const src = book.pdf;
+    const iframe = document.createElement('iframe'); iframe.className='embed-full';
+    iframe.src = src;
+    if(!logged){
+      document.getElementById('readerArea').innerHTML = `<p style="color:var(--muted)">You need to log in to access the full book. Preview (if available) shown below.</p>`;
+      document.getElementById('readerArea').appendChild(iframe);
+      const btn = document.createElement('a'); btn.className='btn primary'; btn.href='login.html'; btn.textContent='Log in to read full';
+      btn.style.display='inline-block'; btn.style.marginTop='12px'; document.getElementById('readerArea').appendChild(btn);
+    } else {
+      document.getElementById('readerArea').innerHTML = ''; document.getElementById('readerArea').appendChild(iframe);
+    }
+  } else {
+    document.getElementById('readerArea').innerHTML = '<h3>Sample — first chapter</h3><p style="color:var(--muted)">'+(book.desc || 'Preview not available.')+'</p>';
+  }
+}
+</script>
+</body></html>

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>About — Tej Kumar Writings</title><link rel="stylesheet" href="style.css"></head>
+<body><header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img class="logo" src="assets/mr-romeo-cover.png" alt="logo"><div><h1>Tej Kumar Writings</h1><p class="tag">Short stories · Novellas · Free books</p></div></a><nav class="main-nav"><a href="index.html">Home</a><a href="library.html">Library</a><a href="about.html" class="active">About</a><a href="upload.html">Upload</a><a class="btn" href="login.html">Log in</a></nav></div></header>
+<main class="container">
+  <h2>About Tej Kumar</h2>
+  <p class="lead">Tej Kumar writes intimate tales exploring memory, love and consequence. This site shares stories and books freely — readers only need an account to access full PDFs.</p>
+  <section class="bio">
+    <h3>Philosophy</h3>
+    <p>Stories are meant to be shared. This collection focuses on human-scale narratives, character-driven tales, and short-form experiments.</p>
+    <h3>How this site works</h3>
+    <p>Books are linked as PDFs (Drive or repo). Admin can add new books via the Upload page. The site uses localStorage for metadata in this demo; for production we recommend Supabase or Firebase for storage and auth.</p>
+  </section>
+</main>
+<footer class="site-footer"><div class="container footer-inner">© <span id="year"></span> Tej Kumar Writings</div></footer>
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body></html>

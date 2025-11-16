@@ -1,0 +1,17 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Sign Up — Tej Kumar Writings</title><link rel="stylesheet" href="style.css"></head><body>
+<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img class="logo" src="assets/mr-romeo-cover.png" alt="logo"><div><h1>Tej Kumar Writings</h1></div></a></div></header>
+<main class="container"><h2>Create Account</h2><div class="form-card"><label>Email</label><input type="email" id="su_email" placeholder="Enter email"><label>Password</label><input type="password" id="su_pass" placeholder="Enter password"><button class="btn primary" id="signupBtn">Sign Up</button><p>Already have an account? <a href="login.html">Log in</a></p></div></main>
+<footer class="site-footer"><div class="container footer-inner">© <span id="year"></span> Tej Kumar Writings</div></footer>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+const USER_KEY = 'tkw_users_v1';
+document.getElementById('signupBtn').addEventListener('click',()=>{
+  const email = document.getElementById('su_email').value.trim();
+  const pass = document.getElementById('su_pass').value.trim();
+  if(!email||!pass) return alert('Provide email & password');
+  let users = JSON.parse(localStorage.getItem(USER_KEY)||'[]');
+  if(users.find(u=>u.email===email)) return alert('Account exists.');
+  users.push({email,pass}); localStorage.setItem(USER_KEY, JSON.stringify(users));
+  sessionStorage.setItem('tkw_session_v1', JSON.stringify({email})); alert('Account created'); window.location='library.html';
+});
+</script></body></html>

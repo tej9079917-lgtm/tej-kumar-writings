@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tej Kumar Writings — Home</title>
+  <meta name="description" content="Tej Kumar Writings — Free stories & books. Log in to read full books." />
+  <link rel="stylesheet" href="style.css">
+  <script src="https://kit.fontawesome.com/a2b9f7d6a9.js" crossorigin="anonymous"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img class="logo" src="assets/mr-romeo-cover.png" alt="Tej Kumar logo">
+        <div>
+          <h1>Tej Kumar Writings</h1>
+          <p class="tag">Short stories • Novellas • Free books</p>
+        </div>
+      </a>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="library.html">Library</a>
+        <a href="about.html">About</a>
+        <a href="upload.html">Upload</a>
+        <a href="contact.html">Contact</a>
+        <a class="btn" href="login.html"><i class="fa fa-user"></i> Log in</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-left">
+        <h2>Stories that linger long after the last line</h2>
+        <p class="lead">Explore curated short stories and free books by Tej Kumar. Sign in to read full books. PDFs are hosted on Google Drive or in the repo assets.</p>
+        <p class="hero-cta">
+          <a class="btn primary" href="library.html">Explore Library</a>
+          <a class="btn" href="about.html">About the author</a>
+        </p>
+        <ul class="features">
+          <li><i class="fa fa-book-open"></i> Free reads (after login)</li>
+          <li><i class="fa fa-feather-alt"></i> New works weekly</li>
+          <li><i class="fa fa-download"></i> PDFs via Drive or GitHub</li>
+        </ul>
+      </div>
+      <aside class="hero-right">
+        <div class="featured">
+          <img src="assets/mr-romeo-cover.png" alt="featured cover">
+          <div class="featured-meta">
+            <h3>Mr. Romeo</h3>
+            <p class="author">by Tej Kumar — Novel</p>
+            <p class="excerpt">A dark, atmospheric tale of love and revenge. Read a free sample.</p>
+            <p><a class="btn" href="story.html?id=mr-romeo">Read sample</a></p>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="preview-grid">
+      <h3>Recent additions</h3>
+      <div class="cards" id="previewCards"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>© <span id="year"></span> Tej Kumar Writings — Free Books</div>
+      <div class="footer-links"><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></div>
+    </div>
+  </footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+const books = getBooks();
+const cards = document.getElementById('previewCards');
+cards.innerHTML = books.slice(0,3).map(b=>`
+  <article class="card">
+    <img src="$${b.cover}" alt="$${b.title}">
+    <div class="card-body">
+      <h4>$${b.title}</h4>
+      <p class="meta">$${b.author}</p>
+      <p><a class="btn" href="story.html?id=$${b.id}">Read sample</a> <a class="btn ghost" href="library.html">Open</a></p>
+    </div>
+  </article>
+`).join('');
+</script>
+</body>
+</html>

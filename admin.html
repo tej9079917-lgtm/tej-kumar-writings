@@ -1,0 +1,12 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Admin — Tej Kumar Writings</title><link rel="stylesheet" href="style.css"></head><body>
+<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img class="logo" src="assets/mr-romeo-cover.png" alt="logo"><div><h1>Tej Kumar Writings</h1></div></a></div></header>
+<main class="container"><h2>Admin: Manage Books</h2><p class="lead">Delete books or open upload page to add new ones</p>
+<div class="form-card"><a class="btn primary" href="upload.html">Upload New</a><div id="listArea" style="margin-top:12px"></div></div></main>
+<footer class="site-footer"><div class="container footer-inner">© <span id="year"></span> Tej Kumar Writings</div></footer>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+function getBooks(){ return JSON.parse(localStorage.getItem('tkw_books_v1')||'[]'); }
+function render(){ const list=document.getElementById('listArea'); const books=getBooks(); if(books.length===0) list.innerHTML='<p style="color:var(--muted)">No books</p>'; else list.innerHTML = books.map(b=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px;border-bottom:1px dashed rgba(255,255,255,0.03)"><div><strong>${b.title}</strong><div style="font-size:13px;color:var(--muted)">${b.author}</div></div><div><button class="btn" onclick="del('${b.id}')">Delete</button></div></div>`).join(''); }
+function del(id){ if(!confirm('Delete?')) return; const books=getBooks().filter(x=>x.id!==id); localStorage.setItem('tkw_books_v1', JSON.stringify(books)); render(); }
+render();
+</script></body></html>

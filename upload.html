@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Upload — Tej Kumar Writings</title><link rel="stylesheet" href="style.css"><script defer src="script.js"></script></head>
+<body>
+<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img class="logo" src="assets/mr-romeo-cover.png" alt="logo"><div><h1>Tej Kumar Writings</h1></div></a><nav class="main-nav"><a href="index.html">Home</a><a href="library.html">Library</a><a href="upload.html" class="active">Upload</a><a class="btn" href="login.html">Log in</a></nav></div></header>
+
+<main class="container">
+  <h2>Upload new story / philosophy / book</h2>
+  <p class="lead">Paste a Google Drive share link for the PDF and cover image (recommended). The site will convert it to an embeddable link.</p>
+
+  <div class="form-card">
+    <label>Title</label><input type="text" id="title" placeholder="Book title">
+    <label>Author</label><input type="text" id="author" placeholder="Author">
+    <label>Description</label><textarea id="desc" placeholder="Short description"></textarea>
+
+    <hr>
+    <h4>Cover image (Google Drive link or direct image URL)</h4>
+    <input type="url" id="coverUrl" placeholder="Image URL or Drive share link">
+
+    <h4>PDF file (Google Drive share link)</h4>
+    <input type="url" id="pdfUrl" placeholder="Google Drive share link (use 'Anyone with the link')">
+
+    <div style="margin-top:12px">
+      <button class="btn primary" id="saveBtn">Save (Drive link)</button>
+      <button class="btn" id="saveLocal">Save Locally (quick test)</button>
+    </div>
+    <div id="status" style="margin-top:12px;color:var(--muted)"></div>
+  </div>
+</main>
+
+<footer class="site-footer"><div class="container footer-inner">© <span id="year"></span> Tej Kumar Writings</div></footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+function convertDrive(url){
+  if(!url) return url;
+  const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+  if(m) return 'https://drive.google.com/uc?export=download&id=' + m[1];
+  return url;
+}
+
+document.getElementById('saveBtn').addEventListener('click', ()=>{
+  const title = document.getElementById('title').value.trim();
+  const author = document.getElementById('author').value.trim();
+  if(!title||!author) return alert('Title and author required');
+  const cover = document.getElementById('coverUrl').value.trim() || 'assets/mr-romeo-cover.png';
+  const pdf_in = document.getElementById('pdfUrl').value.trim();
+  const pdf = pdf_in ? convertDrive(pdf_in) : '#';
+  const books = getBooks();
+  const id = 'b_'+Math.random().toString(36).slice(2,9);
+  books.unshift({id,title,author,desc:document.getElementById('desc').value,cover,pdf});
+  saveBooks(books);
+  document.getElementById('status').textContent = 'Saved. Book added to library.';
+});
+
+document.getElementById('saveLocal').addEventListener('click', ()=>{
+  const title = document.getElementById('title').value.trim();
+  const author = document.getElementById('author').value.trim();
+  if(!title||!author) return alert('Title and author required');
+  const books = getBooks(); const id = 'b_'+Math.random().toString(36).slice(2,9);
+  books.unshift({id,title,author,desc:document.getElementById('desc').value,cover:'assets/mr-romeo-cover.png',pdf:'#'});
+  saveBooks(books);
+  document.getElementById('status').textContent = 'Saved locally for testing.';
+});
+</script>
+</body></html>

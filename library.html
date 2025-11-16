@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Library — Tej Kumar Writings</title><link rel="stylesheet" href="style.css">
+<script src="https://kit.fontawesome.com/a2b9f7d6a9.js" crossorigin="anonymous"></script>
+<script defer src="script.js"></script></head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html"><img class="logo" src="assets/mr-romeo-cover.png" alt="logo"><div><h1>Tej Kumar Writings</h1><p class="tag">Short stories · Novellas · Free books</p></div></a>
+    <nav class="main-nav">
+      <a href="index.html">Home</a><a href="library.html" class="active">Library</a><a href="about.html">About</a><a href="upload.html">Upload</a><a class="btn" href="login.html"><i class="fa fa-user"></i> Log in</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <h2>Library</h2>
+  <p class="lead">Browse available books. Sign in to read full PDF versions.</p>
+
+  <div class="library-controls">
+    <div class="search"><input id="searchInput" placeholder="Search by title or author"></div>
+    <a class="btn primary" href="upload.html">Upload New</a>
+  </div>
+
+  <div class="grid" id="bookGrid"></div>
+</main>
+
+<footer class="site-footer"><div class="container footer-inner">© <span id="year"></span> Tej Kumar Writings</div></footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+function renderBooks(filter=''){
+  const grid = document.getElementById('bookGrid');
+  const books = getBooks().filter(b => (b.title + b.author + (b.desc||'')).toLowerCase().includes(filter.toLowerCase()));
+  if(books.length===0){ grid.innerHTML = `<p style="color:var(--muted)">No books yet. Use Upload to add.</p>`; return; }
+  grid.innerHTML = books.map(b=>`
+    <div class="book-card">
+      <div class="thumb" style="background-image:url('${b.cover || 'assets/mr-romeo-cover.png'}')"></div>
+      <div class="book-meta">
+        <div class="title">${b.title}</div><div class="author">${b.author}</div>
+      </div>
+      <p>${b.desc || ''}</p>
+      <p><a class="btn" href="story.html?id=${b.id}">Read</a> <button class="btn ghost" onclick="preview('${b.id}')">Preview</button></p>
+    </div>
+  `).join('');
+}
+function preview(id){
+  const books=getBooks(); const b=books.find(x=>x.id===id); if(!b) return;
+  const html = `<div style="display:flex;gap:12px"><div style="width:40%"><img src="${b.cover}" style="width:100%;border-radius:8px"></div><div style="flex:1"><h2>${b.title}</h2><p class='author'>${b.author}</p><p style='color:var(--muted)'>${b.desc||''}</p><div style='margin-top:12px'><a class='btn' href='story.html?id=${b.id}'>Read</a></div></div></div>`;
+  const modal = document.createElement('div'); modal.className='modal show'; modal.innerHTML = `<div class="panel">${html}<p style="text-align:right"><button class="btn" onclick="document.body.removeChild(this.parentElement.parentElement)">Close</button></p></div>`;
+  document.body.appendChild(modal);
+}
+document.getElementById('searchInput').addEventListener('input',(e)=>renderBooks(e.target.value));
+renderBooks();
+
+// Listen for storage updates from the upload page to refresh automatically
+window.addEventListener('storage', (e)=>{
+  if(e.key === 'tkw_books_v1_updated') renderBooks();
+});
+</script>
+</body>
+</html>
