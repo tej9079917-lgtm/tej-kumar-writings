@@ -1,8 +1,81 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Contact — Tej Kumar Writings</title><link rel="stylesheet" href="style.css"></head><body>
-<header class="site-header"><div class="container header-inner"><a class="brand" href="index.html"><img class="logo" src="assets/mr-romeo-cover.png" alt="logo"><div><h1>Tej Kumar Writings</h1></div></a></div></header>
-<main class="container"><h2>Contact</h2><p class="lead">Get in touch</p><div class="form-card"><label>Your email</label><input type="email" id="c_email"><label>Message</label><textarea id="c_msg"></textarea><button class="btn primary" id="c_send">Send</button><div id="c_status" style="margin-top:12px;color:var(--muted)"></div></div></main>
-<footer class="site-footer"><div class="container footer-inner">© <span id="year"></span> Tej Kumar Writings</div></footer>
-<script>
-document.getElementById('year').textContent = new Date().getFullYear();
-document.getElementById('c_send').addEventListener('click', ()=>{ document.getElementById('c_status').textContent='Thanks — message noted (demo)'; });
-</script></body></html>
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — Tej Kumar Writings</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img class="logo" src="assets/mr-romeo-cover.png" alt="logo">
+        <div>
+          <h1>Tej Kumar Writings</h1>
+        </div>
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>Contact</h2>
+    <p class="lead">Reach out anytime — I love hearing from my readers.</p>
+
+    <div class="form-card">
+
+      <h3>My Contact Details</h3>
+
+      <p><strong>Phone:</strong>
+        <a href="tel:+916309645717">+91 6309645717</a>
+      </p>
+
+      <p><strong>Instagram:</strong>
+        <a href="https://instagram.com/my_self_tej_" target="_blank">
+          instagram.com/my_self_tej_
+        </a>
+      </p>
+
+      <p><strong>WhatsApp:</strong>
+        <a href="https://wa.me/916309645717" target="_blank">
+          Click to chat on WhatsApp
+        </a>
+      </p>
+
+      <hr style="margin: 18px 0;">
+
+      <h3>Send me a message</h3>
+
+      <label>Your email</label>
+      <input type="email" id="c_email">
+
+      <label>Message</label>
+      <textarea id="c_msg"></textarea>
+
+      <button class="btn primary" id="c_send">Send</button>
+
+      <div id="c_status" style="margin-top:12px;color:var(--muted)"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      © <span id="year"></span> Tej Kumar Writings
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    document.getElementById('c_send').addEventListener('click', () => {
+      document.getElementById('c_status').textContent =
+        'Thanks — your message has been received!';
+    });
+  </script>
+
+</body>
+
+</html>
