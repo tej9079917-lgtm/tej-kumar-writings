@@ -92,6 +92,8 @@
             border: 3px solid rgba(255,255,255,0.3);
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             transition: all 0.3s ease;
+            background: white;
+            padding: 5px;
         }
         
         header.scrolled .main-logo {
@@ -171,6 +173,8 @@
             transform: scale(0.8);
             transition: all 0.3s ease;
             cursor: pointer;
+            background: white;
+            padding: 4px;
         }
         
         .floating-logo.visible {
@@ -182,6 +186,41 @@
         .floating-logo:hover {
             opacity: 1;
             transform: scale(1.1);
+        }
+        
+        /* Fallback logo styling */
+        .logo-fallback {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+        
+        header.scrolled .logo-fallback {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+        }
+        
+        .floating-logo-fallback {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: 2px solid rgba(255,255,255,0.5);
         }
         
         /* Navigation */
@@ -870,18 +909,28 @@
 </head>
 <body>
     <!-- Floating Mini Logo -->
-    <img src="https://drive.google.com/uc?export=view&id=1xJfkBN62H5roZWzQbG-S-j0FObxG_n9L" 
-         alt="Tej Kumar Writings Logo" 
-         class="floating-logo"
-         onclick="scrollToTop()">
+    <div class="floating-logo-container">
+        <img src="https://drive.google.com/thumbnail?id=1xJfkBN62H5roZWzQbG-S-j0FObxG_n9L&sz=w1000" 
+             alt="Tej Kumar Writings Logo" 
+             class="floating-logo"
+             onerror="this.style.display='none'; document.getElementById('floatingLogoFallback').style.display='flex';"
+             onclick="scrollToTop()">
+        <div id="floatingLogoFallback" class="floating-logo-fallback" style="display: none;" onclick="scrollToTop()">
+            TK
+        </div>
+    </div>
 
     <!-- Header Section with Logo -->
     <header id="mainHeader">
         <div class="container header-content">
             <div class="logo-container">
-                <img src="https://drive.google.com/uc?export=view&id=1xJfkBN62H5roZWzQbG-S-j0FObxG_n9L" 
+                <img src="https://drive.google.com/thumbnail?id=1xJfkBN62H5roZWzQbG-S-j0FObxG_n9L&sz=w1000" 
                      alt="Tej Kumar Writings Logo" 
-                     class="main-logo">
+                     class="main-logo"
+                     onerror="this.style.display='none'; document.getElementById('mainLogoFallback').style.display='flex';">
+                <div id="mainLogoFallback" class="logo-fallback" style="display: none;">
+                    TK
+                </div>
                 <div class="logo-text">
                     <h1>Tej Kumar Writings</h1>
                     <p>Discover captivating stories and literary adventures from Tej Kumar</p>
@@ -906,6 +955,7 @@
         </div>
     </nav>
 
+    <!-- Rest of the HTML content remains the same as previous code -->
     <!-- Home Section -->
     <div class="container">
         <div id="home" class="page-section">
@@ -1216,16 +1266,25 @@
         function setupScrollEffect() {
             const header = document.getElementById('mainHeader');
             const floatingLogo = document.querySelector('.floating-logo');
+            const floatingFallback = document.getElementById('floatingLogoFallback');
             
             window.addEventListener('scroll', function() {
                 const scrollPosition = window.scrollY;
                 
                 if (scrollPosition > 100) {
                     header.classList.add('scrolled');
-                    floatingLogo.classList.add('visible');
+                    if (floatingLogo.style.display !== 'none') {
+                        floatingLogo.classList.add('visible');
+                    } else {
+                        floatingFallback.classList.add('visible');
+                    }
                 } else {
                     header.classList.remove('scrolled');
-                    floatingLogo.classList.remove('visible');
+                    if (floatingLogo.style.display !== 'none') {
+                        floatingLogo.classList.remove('visible');
+                    } else {
+                        floatingFallback.classList.remove('visible');
+                    }
                 }
             });
         }
