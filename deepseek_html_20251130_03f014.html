@@ -6,7 +6,6 @@
     <title>Tej Kumar Writings - Story Book Collection</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* === Base Styles === */
         * {
             margin: 0;
             padding: 0;
@@ -36,45 +35,24 @@
             padding: 0 20px;
         }
         
-        /* === Header Styles === */
+        /* Header Styles */
         header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 30px 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        header::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
-            background-size: cover;
-        }
-        
-        .header-content {
-            position: relative;
-            z-index: 1;
+            padding: 40px 0;
             text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
         }
         
         header h1 {
-            font-size: 3.2rem;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            font-size: 3rem;
+            margin-bottom: 15px;
         }
         
         header p {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             opacity: 0.9;
-            margin-bottom: 20px;
+            max-width: 600px;
+            margin: 0 auto 20px;
         }
         
         .author-badge {
@@ -83,23 +61,19 @@
             padding: 8px 20px;
             border-radius: 30px;
             font-size: 1rem;
-            backdrop-filter: blur(5px);
         }
         
-        /* === Navigation === */
+        /* Navigation */
         nav {
             background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
         }
         
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 0;
         }
         
         .logo {
@@ -111,10 +85,7 @@
         .nav-links {
             display: flex;
             list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 25px;
+            gap: 25px;
         }
         
         .nav-links a {
@@ -122,49 +93,31 @@
             color: var(--dark);
             font-weight: 500;
             transition: color 0.3s;
-            position: relative;
         }
         
         .nav-links a:hover {
             color: var(--primary);
         }
         
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s;
-        }
-        
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-        
-        /* === Main Content Layout === */
+        /* Main Content */
         .main-content {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 30px;
             margin: 40px 0;
         }
         
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
         .upload-section, .library-section {
-            flex: 1;
-            min-width: 300px;
             background: white;
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .upload-section:hover, .library-section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
         
         .section-title {
@@ -172,39 +125,28 @@
             margin-bottom: 20px;
             padding-bottom: 10px;
             border-bottom: 2px solid var(--accent);
-            font-size: 1.8rem;
         }
         
-        /* === Upload Area Styles === */
+        /* Upload Area */
         .upload-area {
             border: 2px dashed var(--primary);
             border-radius: 12px;
-            padding: 40px 20px;
+            padding: 30px;
             text-align: center;
             margin: 20px 0;
-            transition: all 0.3s;
+            background: rgba(109, 93, 110, 0.05);
             cursor: pointer;
-            background: rgba(109, 93, 110, 0.03);
+            transition: all 0.3s;
         }
         
         .upload-area:hover {
-            background-color: rgba(109, 93, 110, 0.08);
+            background: rgba(109, 93, 110, 0.1);
             border-color: var(--highlight);
         }
         
         .upload-area i {
-            font-size: 50px;
+            font-size: 48px;
             color: var(--primary);
-            margin-bottom: 15px;
-        }
-        
-        .upload-area h3 {
-            margin-bottom: 10px;
-            color: var(--secondary);
-        }
-        
-        .upload-area p {
-            color: #7f8c8d;
             margin-bottom: 15px;
         }
         
@@ -215,51 +157,9 @@
             border-radius: 8px;
             font-size: 1rem;
             margin-top: 10px;
-            transition: border 0.3s;
         }
         
-        .drive-link-input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(109, 93, 110, 0.2);
-        }
-        
-        /* === Button Styles === */
-        .browse-btn, .submit-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .browse-btn:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-        }
-        
-        .submit-btn {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--highlight) 100%);
-            padding: 15px 25px;
-            font-size: 1.1rem;
-            width: 100%;
-            margin-top: 10px;
-            box-shadow: 0 4px 15px rgba(167, 130, 149, 0.3);
-        }
-        
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(167, 130, 149, 0.4);
-        }
-        
-        /* === Form Styles === */
+        /* Form Styles */
         .form-group {
             margin-bottom: 20px;
         }
@@ -271,19 +171,14 @@
             color: var(--secondary);
         }
         
-        .form-group input, .form-group textarea, .form-group select {
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 1rem;
-            transition: border 0.3s;
-        }
-        
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(109, 93, 110, 0.2);
         }
         
         .form-group textarea {
@@ -291,14 +186,25 @@
             resize: vertical;
         }
         
-        /* === Library Section Styles === */
-        .library-section h2 {
-            color: var(--secondary);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid var(--accent);
+        /* Buttons */
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--highlight) 100%);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: transform 0.3s;
         }
         
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Book Library */
         .book-list {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -310,26 +216,12 @@
             border-radius: 12px;
             padding: 20px;
             text-align: center;
-            transition: all 0.3s;
+            transition: transform 0.3s;
             cursor: pointer;
-            border: 1px solid rgba(0,0,0,0.05);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .book-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--highlight) 100%);
         }
         
         .book-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
         }
         
         .book-cover {
@@ -337,20 +229,18 @@
             height: 150px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             border-radius: 8px;
-            margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 2.8rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
         }
         
         .book-title {
             font-weight: 700;
             margin-bottom: 5px;
             color: var(--dark);
-            font-size: 1.1rem;
         }
         
         .book-author {
@@ -363,126 +253,36 @@
             display: inline-block;
             background: rgba(109, 93, 110, 0.1);
             color: var(--primary);
-            padding: 3px 10px;
+            padding: 4px 12px;
             border-radius: 20px;
             font-size: 0.8rem;
         }
         
-        /* === Featured Section === */
-        .featured-section {
-            background: linear-gradient(135deg, var(--accent) 0%, #f8f5f2 100%);
-            border-radius: 15px;
-            padding: 40px;
-            margin: 40px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            text-align: center;
-        }
-        
-        .featured-book {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .featured-cover {
-            width: 150px;
-            height: 200px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--highlight) 100%);
-            border-radius: 10px;
-            margin: 0 auto 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3.5rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-        }
-        
-        .featured-title {
-            font-size: 2rem;
-            color: var(--secondary);
-            margin-bottom: 10px;
-        }
-        
-        .featured-author {
-            font-size: 1.2rem;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-        
-        .featured-description {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            color: #555;
-            margin-bottom: 25px;
-        }
-        
-        .read-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(109, 93, 110, 0.3);
-        }
-        
-        .read-btn:hover {
-            background: var(--secondary);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(109, 93, 110, 0.4);
-        }
-        
-        /* === Footer Styles === */
+        /* Footer */
         footer {
             background: linear-gradient(135deg, var(--secondary) 0%, var(--dark) 100%);
             color: white;
-            padding: 50px 0 20px;
+            padding: 40px 0 20px;
             margin-top: 60px;
         }
         
         .footer-content {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            margin-bottom: 40px;
-        }
-        
-        .footer-section {
-            flex: 1;
-            min-width: 250px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
             margin-bottom: 30px;
         }
         
         .footer-section h3 {
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .footer-section h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background: var(--accent);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
         }
         
         .contact-info a {
             color: var(--accent);
             text-decoration: none;
             display: block;
-            margin-bottom: 10px;
-            transition: color 0.3s;
-        }
-        
-        .contact-info a:hover {
-            color: white;
+            margin-bottom: 8px;
         }
         
         .social-links {
@@ -499,7 +299,7 @@
             background: rgba(255,255,255,0.1);
             border-radius: 50%;
             color: white;
-            font-size: 1.2rem;
+            text-decoration: none;
             transition: all 0.3s;
         }
         
@@ -512,65 +312,22 @@
             text-align: center;
             padding-top: 20px;
             border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.9rem;
             color: rgba(255,255,255,0.7);
-        }
-        
-        /* === Responsive Design === */
-        @media (max-width: 768px) {
-            .main-content {
-                flex-direction: column;
-            }
-            
-            header h1 {
-                font-size: 2.5rem;
-            }
-            
-            .nav-container {
-                flex-direction: column;
-                padding: 15px 0;
-            }
-            
-            .nav-links {
-                margin-top: 15px;
-            }
-            
-            .nav-links li {
-                margin: 0 10px;
-            }
-            
-            .featured-section {
-                padding: 30px 20px;
-            }
-            
-            .featured-title {
-                font-size: 1.7rem;
-            }
-        }
-        
-        /* === Animation === */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.8s ease-out;
         }
     </style>
 </head>
 <body>
     <!-- Header Section -->
     <header>
-        <div class="container header-content">
+        <div class="container">
             <h1>Tej Kumar Writings</h1>
-            <p>Immerse yourself in captivating stories and literary adventures</p>
+            <p>Discover captivating stories and literary adventures from Tej Kumar</p>
             <div class="author-badge">
                 <i class="fas fa-pen-fancy"></i> Author & Storyteller
             </div>
         </div>
     </header>
-    
+
     <!-- Navigation -->
     <nav>
         <div class="container nav-container">
@@ -583,35 +340,22 @@
             </ul>
         </div>
     </nav>
-    
+
+    <!-- Main Content -->
     <div class="container">
-        <!-- Featured Book Section -->
-        <section class="featured-section fade-in">
-            <div class="featured-book">
-                <div class="featured-cover">
-                    <i class="fas fa-book-open"></i>
-                </div>
-                <h2 class="featured-title">The Lost Kingdom</h2>
-                <p class="featured-author">by Tej Kumar</p>
-                <p class="featured-description">A thrilling adventure through forgotten lands where ancient secrets await discovery. Join our hero as they unravel mysteries that could change the fate of the entire realm.</p>
-                <button class="read-btn"><i class="fas fa-book-reader"></i> Read Now</button>
-            </div>
-        </section>
-        
-        <!-- Main Content -->
         <div class="main-content">
             <!-- Upload Section -->
-            <section class="upload-section fade-in">
+            <section class="upload-section">
                 <h2 class="section-title">Share Your Story</h2>
-                <p><strong>How it works:</strong> Upload your book to Google Drive, get a shareable link, and submit the details below.</p>
+                <p><strong>How it works:</strong> Upload your book to Google Drive and share the link below.</p>
                 
-                <div class="upload-area" onclick="document.getElementById('driveLink').focus();">
+                <div class="upload-area" onclick="document.getElementById('driveLink').focus()">
                     <i class="fab fa-google-drive"></i>
                     <h3>Google Drive Link</h3>
-                    <p>Paste the shareable link to your book file here</p>
+                    <p>Paste your shareable Google Drive link here</p>
                     <input type="url" id="driveLink" class="drive-link-input" placeholder="https://drive.google.com/file/d/...">
                 </div>
-                
+
                 <div class="book-details">
                     <div class="form-group">
                         <label for="bookTitle">Book Title *</label>
@@ -638,7 +382,6 @@
                             <option value="romance">Romance</option>
                             <option value="sci-fi">Science Fiction</option>
                             <option value="children">Children's</option>
-                            <option value="biography">Biography</option>
                             <option value="other">Other</option>
                         </select>
                     </div>
@@ -646,135 +389,144 @@
                     <button class="submit-btn" onclick="submitBook()">
                         <i class="fas fa-cloud-upload-alt"></i> Submit Book for Review
                     </button>
-                    <p style="font-size: 0.9rem; margin-top: 10px; color: #7f8c8d; text-align: center;">
-                        Note: Your submission will be reviewed before appearing on the site.
-                    </p>
                 </div>
             </section>
-            
+
             <!-- Library Section -->
-            <section class="library-section fade-in">
+            <section class="library-section">
                 <h2 class="section-title">Story Library</h2>
-                <div class="book-list" id="bookList">
-                    <div class="book-card" onclick="openBook('https://drive.google.com/file/d/EXAMPLE/view')">
-                        <div class="book-cover"><i class="fas fa-book"></i></div>
+                <div class="book-list">
+                    <div class="book-card" onclick="openBook('https://drive.google.com')">
+                        <div class="book-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="book-title">The Lost Kingdom</div>
+                        <div class="book-author">by Tej Kumar</div>
+                        <div class="book-genre">Fantasy</div>
+                    </div>
+                    
+                    <div class="book-card" onclick="openBook('https://drive.google.com')">
+                        <div class="book-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
                         <div class="book-title">Ocean Secrets</div>
                         <div class="book-author">by Tej Kumar</div>
                         <div class="book-genre">Adventure</div>
                     </div>
                     
-                    <div class="book-card" onclick="openBook('https://drive.google.com/file/d/EXAMPLE/view')">
-                        <div class="book-cover"><i class="fas fa-book"></i></div>
+                    <div class="book-card" onclick="openBook('https://drive.google.com')">
+                        <div class="book-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
                         <div class="book-title">Starlight Journey</div>
                         <div class="book-author">by Tej Kumar</div>
                         <div class="book-genre">Sci-Fi</div>
                     </div>
                     
-                    <div class="book-card" onclick="openBook('https://drive.google.com/file/d/EXAMPLE/view')">
-                        <div class="book-cover"><i class="fas fa-book"></i></div>
+                    <div class="book-card" onclick="openBook('https://drive.google.com')">
+                        <div class="book-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
                         <div class="book-title">Mountain Echoes</div>
                         <div class="book-author">by Tej Kumar</div>
                         <div class="book-genre">Mystery</div>
-                    </div>
-                    
-                    <div class="book-card" onclick="openBook('https://drive.google.com/file/d/EXAMPLE/view')">
-                        <div class="book-cover"><i class="fas fa-book"></i></div>
-                        <div class="book-title">Whispers of Time</div>
-                        <div class="book-author">by Tej Kumar</div>
-                        <div class="book-genre">Fantasy</div>
                     </div>
                 </div>
             </section>
         </div>
     </div>
-    
+
     <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>About Tej Kumar</h3>
-                    <p>Tej Kumar is a passionate writer and storyteller creating immersive worlds and compelling narratives for readers of all ages.</p>
+                    <p>Passionate writer and storyteller creating immersive worlds and compelling narratives for readers worldwide.</p>
                 </div>
                 
                 <div class="footer-section">
                     <h3>Contact Info</h3>
                     <div class="contact-info">
-                        <a href="tel:+916309645717"><i class="fas fa-phone"></i> +91 6309645717</a>
-                        <a href="https://wa.me/916309645717"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                        <a href="https://www.instagram.com/my_self_tej_?igsh=bmFseGYwdGlyZDV0"><i class="fab fa-instagram"></i> Instagram</a>
-                        <a href="mailto:contact@tejkumarwritings.com"><i class="fas fa-envelope"></i> Email</a>
+                        <a href="tel:+916309645717">
+                            <i class="fas fa-phone"></i> +91 6309645717
+                        </a>
+                        <a href="https://wa.me/916309645717">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        <a href="https://www.instagram.com/my_self_tej_?igsh=bmFseGYwdGlyZDV0">
+                            <i class="fab fa-instagram"></i> Instagram
+                        </a>
                     </div>
                 </div>
                 
                 <div class="footer-section">
-                    <h3>Connect</h3>
+                    <h3>Connect With Me</h3>
                     <div class="social-links">
-                        <a href="https://www.instagram.com/my_self_tej_?igsh=bmFseGYwdGlyZDV0"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-goodreads"></i></a>
+                        <a href="https://www.instagram.com/my_self_tej_?igsh=bmFseGYwdGlyZDV0">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#">
+                            <i class="fab fa-goodreads"></i>
+                        </a>
                     </div>
                 </div>
             </div>
             
             <div class="copyright">
-                <p>Tej Kumar Writings &copy; 2023 | Crafting Stories, Creating Worlds</p>
+                <p>&copy; 2023 Tej Kumar Writings. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Book submission function
         function submitBook() {
             const title = document.getElementById('bookTitle').value;
             const author = document.getElementById('bookAuthor').value;
             const driveLink = document.getElementById('driveLink').value;
-            const description = document.getElementById('bookDescription').value;
-            const genre = document.getElementById('bookGenre').value;
             
             if (!title || !author || !driveLink) {
-                alert('Please fill in the required fields: Title, Author, and Google Drive Link.');
+                alert('Please fill in all required fields: Title, Author, and Google Drive Link.');
                 return;
             }
             
-            // In a real implementation, this would connect to a backend
-            // For this demo, we'll just show a success message
             alert(`Thank you for submitting "${title}"!\n\nYour book has been sent for review and will appear in the library once approved.`);
             
-            console.log('New Book Submission:', { title, author, driveLink, description, genre });
-            
-            // Reset the form
+            // Reset form
             document.getElementById('bookTitle').value = '';
             document.getElementById('driveLink').value = '';
             document.getElementById('bookDescription').value = '';
             document.getElementById('bookGenre').value = '';
         }
         
-        // Function to open a book
-        function openBook(driveUrl) {
-            // Open the Google Drive link in a new tab
-            window.open(driveUrl, '_blank');
+        function openBook(url) {
+            window.open(url, '_blank');
         }
         
-        // Add fade-in animation to elements when they come into view
+        // Simple animation on scroll
         document.addEventListener('DOMContentLoaded', function() {
-            const fadeElements = document.querySelectorAll('.fade-in');
+            const cards = document.querySelectorAll('.book-card, .upload-section, .library-section');
             
-            const fadeInObserver = new IntersectionObserver((entries) => {
+            const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.style.opacity = 1;
                         entry.target.style.transform = 'translateY(0)';
                     }
                 });
-            }, { threshold: 0.1 });
+            });
             
-            fadeElements.forEach(el => {
-                el.style.opacity = 0;
-                el.style.transform = 'translateY(20px)';
-                el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-                fadeInObserver.observe(el);
+            cards.forEach(card => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
             });
         });
     </script>
