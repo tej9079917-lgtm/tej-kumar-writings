@@ -587,6 +587,31 @@
             font-weight: 600;
         }
 
+        .copy-btn {
+            background: var(--highlight);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .email-display {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: left;
+            border-left: 4px solid var(--primary);
+        }
+
+        .email-display h4 {
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
         /* Page Sections */
         .page-section {
             display: none;
@@ -753,7 +778,7 @@
                     <h3>⭐ Why Choose Us?</h3>
                     <div class="feature-list">
                         <div class="feature-item">
-                            <i class="fas fa-free"></i>
+                            <i class="fas fa-dollar-sign"></i>
                             <h4>Completely Free</h4>
                             <p>No hidden charges or fees</p>
                         </div>
@@ -828,12 +853,26 @@
     <div class="modal" id="approvalModal">
         <div class="modal-content">
             <i class="fas fa-paper-plane" style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
-            <h3>Book Submission Sent for Approval!</h3>
-            <p>Your book "<span id="submittedTitle" style="font-weight: bold; color: var(--primary);"></span>" has been submitted for review.</p>
-            <p>An approval request has been sent to <strong>tej9079917@gmail.com</strong></p>
-            <p>You will receive an email once your book is approved and published on the website.</p>
+            <h3>Book Submission Ready for Approval!</h3>
+            <p>Your book "<span id="submittedTitle" style="font-weight: bold; color: var(--primary);"></span>" has been prepared for submission.</p>
+            
+            <div class="email-display">
+                <h4>📧 Email Instructions:</h4>
+                <p><strong>To:</strong> tej9079917@gmail.com</p>
+                <p><strong>Subject:</strong> <span id="emailSubject"></span></p>
+                <p><strong>Body:</strong> The submission details have been copied to your clipboard.</p>
+            </div>
+            
+            <p><strong>Next Steps:</strong></p>
+            <ol style="text-align: left; margin: 15px 0;">
+                <li>Open your email app (Gmail, Outlook, etc.)</li>
+                <li>Paste the submission details in the email body</li>
+                <li>Send the email to tej9079917@gmail.com</li>
+            </ol>
+            
             <div class="modal-buttons">
                 <button class="modal-ok-btn" onclick="closeModal()">OK</button>
+                <button class="copy-btn" onclick="copyEmailContent()">Copy Again</button>
             </div>
         </div>
     </div>
@@ -905,7 +944,10 @@
             window.scrollTo(0, 0);
         }
 
-        // Function to submit book for approval via email
+        // Store email content globally
+        let currentEmailContent = '';
+
+        // Function to submit book for approval
         function submitBookForApproval() {
             const title = document.getElementById('bookTitle').value;
             const author = document.getElementById('bookAuthor').value;
@@ -959,15 +1001,16 @@ APPROVAL INSTRUCTIONS:
 This submission was sent from Tej Kumar Writings website.
             `.trim();
 
-            // Create mailto link
-            const mailtoLink = `mailto:tej9079917@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            // Store content globally
+            currentEmailContent = body;
             
-            // Open email client
-            window.location.href = mailtoLink;
-            
-            // Show confirmation modal
+            // Show confirmation modal with copy option
             document.getElementById('submittedTitle').textContent = title;
+            document.getElementById('emailSubject').textContent = subject;
             document.getElementById('approvalModal').style.display = 'flex';
+            
+            // Copy to clipboard automatically
+            copyToClipboard(body);
             
             // Reset form after a short delay
             setTimeout(() => {
@@ -978,6 +1021,29 @@ This submission was sent from Tej Kumar Writings website.
                 document.getElementById('bookGenre').value = '';
                 document.getElementById('submitterEmail').value = '';
             }, 1000);
+        }
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                console.log('Copying to clipboard was successful!');
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+                // Fallback for older browsers
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+            });
+        }
+
+        function copyEmailContent() {
+            if (currentEmailContent) {
+                copyToClipboard(currentEmailContent);
+                alert('Submission details copied to clipboard again!');
+            }
         }
 
         function closeModal() {
