@@ -35,11 +35,11 @@
             padding: 0 20px;
         }
         
-        /* Header Styles with Logo */
+        /* Header Styles with Zoomed Logo */
         header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 40px 0 30px;
+            padding: 60px 0 30px;
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -75,30 +75,34 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 25px;
+            margin-bottom: 20px;
             transition: all 0.3s ease;
         }
         
         header.scrolled .logo-container {
             margin-bottom: 5px;
+            gap: 15px;
         }
         
         .main-logo {
-            width: 60px;
-            height: 60px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid rgba(255,255,255,0.3);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 5px solid rgba(255,255,255,0.4);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
             transition: all 0.3s ease;
             background: white;
-            padding: 5px;
+            padding: 10px;
+            transform: scale(1.1);
         }
         
         header.scrolled .main-logo {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
+            border-width: 2px;
+            transform: scale(1);
         }
         
         .logo-text {
@@ -106,20 +110,27 @@
         }
         
         .logo-text h1 {
-            font-size: 2.5rem;
-            margin-bottom: 5px;
+            font-size: 3.2rem;
+            margin-bottom: 8px;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
             transition: all 0.3s ease;
         }
         
         header.scrolled .logo-text h1 {
-            font-size: 1.5rem;
+            font-size: 1.8rem;
         }
         
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        .logo-text p {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            margin: 0;
+            transition: all 0.3s ease;
+        }
+        
+        header.scrolled .logo-text p {
+            font-size: 0;
+            opacity: 0;
+            height: 0;
         }
         
         header p {
@@ -142,9 +153,9 @@
         .author-badge {
             display: inline-block;
             background: rgba(255,255,255,0.2);
-            padding: 8px 20px;
+            padding: 12px 30px;
             border-radius: 30px;
-            font-size: 0.9rem;
+            font-size: 1.1rem;
             backdrop-filter: blur(5px);
             transition: all 0.3s ease;
         }
@@ -161,11 +172,11 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            width: 50px;
-            height: 50px;
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.5);
+            border: 3px solid rgba(255,255,255,0.5);
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             z-index: 1000;
             opacity: 0;
@@ -174,7 +185,7 @@
             transition: all 0.3s ease;
             cursor: pointer;
             background: white;
-            padding: 4px;
+            padding: 6px;
         }
         
         .floating-logo.visible {
@@ -190,37 +201,41 @@
         
         /* Fallback logo styling */
         .logo-fallback {
-            width: 60px;
-            height: 60px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.5rem;
+            font-size: 2.5rem;
             font-weight: bold;
-            border: 3px solid rgba(255,255,255,0.3);
+            border: 5px solid rgba(255,255,255,0.4);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            transform: scale(1.1);
         }
         
         header.scrolled .logo-fallback {
-            width: 40px;
-            height: 40px;
-            font-size: 1rem;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            border-width: 2px;
+            transform: scale(1);
         }
         
         .floating-logo-fallback {
-            width: 50px;
-            height: 50px;
+            width: 65px;
+            height: 65px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.2rem;
+            font-size: 1.6rem;
             font-weight: bold;
-            border: 2px solid rgba(255,255,255,0.5);
+            border: 3px solid rgba(255,255,255,0.5);
         }
         
         /* Navigation */
@@ -826,11 +841,42 @@
 
         /* Mobile Responsive */
         @media (max-width: 480px) {
-            header h1 {
-                font-size: 2rem;
+            header {
+                padding: 40px 0 20px;
             }
             
-            header p {
+            .logo-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .main-logo {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .logo-text h1 {
+                font-size: 2.5rem;
+            }
+            
+            .logo-text p {
+                font-size: 1.2rem;
+            }
+            
+            header.scrolled .logo-text h1 {
+                font-size: 1.5rem;
+            }
+            
+            .logo-fallback {
+                width: 100px;
+                height: 100px;
+                font-size: 2.2rem;
+            }
+            
+            header.scrolled .logo-fallback {
+                width: 40px;
+                height: 40px;
                 font-size: 1rem;
             }
             
@@ -875,18 +921,9 @@
                 gap: 20px;
             }
             
-            .logo-container {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .logo-text {
-                text-align: center;
-            }
-            
             .floating-logo {
-                width: 40px;
-                height: 40px;
+                width: 55px;
+                height: 55px;
                 bottom: 15px;
                 right: 15px;
             }
@@ -920,7 +957,7 @@
         </div>
     </div>
 
-    <!-- Header Section with Logo -->
+    <!-- Header Section with Zoomed Logo -->
     <header id="mainHeader">
         <div class="container header-content">
             <div class="logo-container">
@@ -942,6 +979,7 @@
         </div>
     </header>
 
+    <!-- Rest of the HTML remains exactly the same -->
     <!-- Navigation -->
     <nav>
         <div class="container nav-container">
@@ -955,7 +993,6 @@
         </div>
     </nav>
 
-    <!-- Rest of the HTML content remains the same as previous code -->
     <!-- Home Section -->
     <div class="container">
         <div id="home" class="page-section">
@@ -1095,360 +1132,4 @@
                     <p>Publishing your book with us is completely free and simple:</p>
                     <ol>
                         <li><strong>Upload to Google Drive:</strong> Save your book file (PDF, DOCX, etc.) to your Google Drive</li>
-                        <li><strong>Get Shareable Link:</strong> Right-click the file → Share → Copy link</li>
-                        <li><strong>Submit for Approval:</strong> Use our submission form on the Home page</li>
-                        <li><strong>Wait for Review:</strong> Tej Kumar will review your submission</li>
-                        <li><strong>Get Published:</strong> Once approved, your book appears in our library!</li>
-                    </ol>
-                    
-                    <h3>⭐ Why Choose Us?</h3>
-                    <div class="feature-list">
-                        <div class="feature-item">
-                            <i class="fas fa-dollar-sign"></i>
-                            <h4>Completely Free</h4>
-                            <p>No hidden charges or fees</p>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-globe"></i>
-                            <h4>Global Reach</h4>
-                            <p>Share your stories worldwide</p>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-shield-alt"></i>
-                            <h4>Quality Control</h4>
-                            <p>Every book is personally reviewed</p>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-users"></i>
-                            <h4>Community</h4>
-                            <p>Connect with readers and writers</p>
-                        </div>
-                    </div>
-                    
-                    <h3>📚 Genres We Accept</h3>
-                    <p>We welcome stories from all genres including Fantasy, Adventure, Mystery, Romance, Science Fiction, Children's stories, and many more!</p>
-                </div>
-            </section>
-        </div>
-
-        <!-- Contact Section -->
-        <div id="contact" class="page-section">
-            <section class="contact-section fade-in">
-                <h2 class="section-title">Get In Touch</h2>
-                <p>Have questions about publishing your book? Want to collaborate? Reach out to me through any of these methods:</p>
-                
-                <div class="contact-methods">
-                    <div class="contact-method">
-                        <i class="fab fa-whatsapp"></i>
-                        <h4>WhatsApp</h4>
-                        <p>Quick conversations</p>
-                        <a href="https://wa.me/916309645717" target="_blank">+91 6309645717</a>
-                    </div>
-                    
-                    <div class="contact-method">
-                        <i class="fas fa-envelope"></i>
-                        <h4>Email</h4>
-                        <p>For detailed inquiries</p>
-                        <a href="mailto:tejkumar4321@gmail.com">tejkumar4321@gmail.com</a>
-                    </div>
-                    
-                    <div class="contact-method">
-                        <i class="fab fa-instagram"></i>
-                        <h4>Instagram</h4>
-                        <p>Follow for updates</p>
-                        <a href="https://www.instagram.com/my_self_tej_?igsh=bmFseGYwdGlyZDV0" target="_blank">@my_self_tej_</a>
-                    </div>
-                    
-                    <div class="contact-method">
-                        <i class="fas fa-phone"></i>
-                        <h4>Phone</h4>
-                        <p>Direct calls</p>
-                        <a href="tel:+916309645717">+91 6309645717</a>
-                    </div>
-                </div>
-                
-                <div class="admin-section" style="margin-top: 30px;">
-                    <h4><i class="fas fa-clock"></i> Response Time</h4>
-                    <p>I typically respond within 24 hours. For book submissions, please allow 2-3 days for review and approval.</p>
-                </div>
-            </section>
-        </div>
-    </div>
-
-    <!-- Approval Modal -->
-    <div class="modal" id="approvalModal">
-        <div class="modal-content">
-            <i class="fas fa-paper-plane" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 15px;"></i>
-            <h3>Book Submission Ready for Approval!</h3>
-            <p>Your book "<span id="submittedTitle" style="font-weight: bold; color: var(--primary);"></span>" has been prepared for submission.</p>
-            
-            <div class="email-display">
-                <h4>📧 Email Instructions:</h4>
-                <p><strong>To:</strong> tej9079917@gmail.com</p>
-                <p><strong>Subject:</strong> <span id="emailSubject"></span></p>
-                <p><strong>Body:</strong> The submission details have been copied to your clipboard.</p>
-            </div>
-            
-            <p><strong>Next Steps:</strong></p>
-            <ol style="text-align: left; margin: 15px 0; font-size: 0.9rem;">
-                <li>Open your email app (Gmail, Outlook, etc.)</li>
-                <li>Paste the submission details in the email body</li>
-                <li>Send the email to tej9079917@gmail.com</li>
-            </ol>
-            
-            <div class="modal-buttons">
-                <button class="modal-ok-btn" onclick="closeModal()">OK</button>
-                <button class="copy-btn" onclick="copyEmailContent()">Copy Again</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>About Tej Kumar</h3>
-                    <p>Passionate writer and storyteller creating immersive worlds and compelling narratives for readers worldwide.</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Contact Info</h3>
-                    <div class="contact-info">
-                        <a href="tel:+916309645717">
-                            <i class="fas fa-phone"></i> +91 6309645717
-                        </a>
-                        <a href="https://wa.me/916309645717">
-                            <i class="fab fa-whatsapp"></i> WhatsApp
-                        </a>
-                        <a href="https://www.instagram.com/my_self_tej_?igsh=bmFseGYwdGlyZDV0">
-                            <i class="fab fa-instagram"></i> Instagram
-                        </a>
-                        <a href="mailto:tejkumar4321@gmail.com">
-                            <i class="fas fa-envelope"></i> tejkumar4321@gmail.com
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="footer-section">
-                    <h3>Connect With Me</h3>
-                    <div class="social-links">
-                        <a href="https://www.instagram.com/my_self_tej_?igsh=bmFseGYwdGlyZDV0">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="#">
-                            <i class="fab fa-goodreads"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2023 Tej Kumar Writings. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Set Library as default page on load
-        document.addEventListener('DOMContentLoaded', function() {
-            showSection('library');
-            setupScrollEffect();
-        });
-
-        // Scroll effect for header and floating logo
-        function setupScrollEffect() {
-            const header = document.getElementById('mainHeader');
-            const floatingLogo = document.querySelector('.floating-logo');
-            const floatingFallback = document.getElementById('floatingLogoFallback');
-            
-            window.addEventListener('scroll', function() {
-                const scrollPosition = window.scrollY;
-                
-                if (scrollPosition > 100) {
-                    header.classList.add('scrolled');
-                    if (floatingLogo.style.display !== 'none') {
-                        floatingLogo.classList.add('visible');
-                    } else {
-                        floatingFallback.classList.add('visible');
-                    }
-                } else {
-                    header.classList.remove('scrolled');
-                    if (floatingLogo.style.display !== 'none') {
-                        floatingLogo.classList.remove('visible');
-                    } else {
-                        floatingFallback.classList.remove('visible');
-                    }
-                }
-            });
-        }
-
-        // Scroll to top function
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-
-        // Navigation function
-        function showSection(sectionName) {
-            // Hide all sections
-            document.querySelectorAll('.page-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Show selected section
-            document.getElementById(sectionName).classList.add('active');
-            
-            // Scroll to top
-            window.scrollTo(0, 0);
-        }
-
-        // Store email content globally
-        let currentEmailContent = '';
-
-        // Function to submit book for approval
-        function submitBookForApproval() {
-            const title = document.getElementById('bookTitle').value;
-            const author = document.getElementById('bookAuthor').value;
-            const driveLink = document.getElementById('driveLink').value;
-            const description = document.getElementById('bookDescription').value;
-            const genre = document.getElementById('bookGenre').value;
-            const submitterEmail = document.getElementById('submitterEmail').value;
-            
-            if (!title || !author || !driveLink || !submitterEmail) {
-                alert('Please fill in all required fields: Title, Author, Google Drive Link, and Email.');
-                return;
-            }
-
-            // Validate email format
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(submitterEmail)) {
-                alert('Please enter a valid email address.');
-                return;
-            }
-
-            // Validate Google Drive link format
-            if (!driveLink.includes('drive.google.com')) {
-                alert('Please enter a valid Google Drive link.');
-                return;
-            }
-
-            // Create email content
-            const subject = `📚 Book Submission: ${title}`;
-            const body = `
-NEW BOOK SUBMISSION FOR APPROVAL
-
-Book Details:
--------------
-📖 Title: ${title}
-✍️ Author: ${author}
-📚 Genre: ${genre}
-📧 Submitter Email: ${submitterEmail}
-🔗 Google Drive Link: ${driveLink}
-
-Book Description:
-${description}
-
-Submission Date: ${new Date().toLocaleString()}
-
----
-APPROVAL INSTRUCTIONS:
-1. Review the book at the Google Drive link above
-2. If approved, add it to the website library
-3. Email the submitter at ${submitterEmail} with the good news!
-
-This submission was sent from Tej Kumar Writings website.
-            `.trim();
-
-            // Store content globally
-            currentEmailContent = body;
-            
-            // Show confirmation modal with copy option
-            document.getElementById('submittedTitle').textContent = title;
-            document.getElementById('emailSubject').textContent = subject;
-            document.getElementById('approvalModal').style.display = 'flex';
-            
-            // Copy to clipboard automatically
-            copyToClipboard(body);
-            
-            // Reset form after a short delay
-            setTimeout(() => {
-                document.getElementById('bookTitle').value = '';
-                document.getElementById('bookAuthor').value = '';
-                document.getElementById('driveLink').value = '';
-                document.getElementById('bookDescription').value = '';
-                document.getElementById('bookGenre').value = '';
-                document.getElementById('submitterEmail').value = '';
-            }, 1000);
-        }
-
-        // Copy to clipboard function
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(function() {
-                console.log('Copying to clipboard was successful!');
-            }, function(err) {
-                console.error('Could not copy text: ', err);
-                // Fallback for older browsers
-                const textArea = document.createElement("textarea");
-                textArea.value = text;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-            });
-        }
-
-        function copyEmailContent() {
-            if (currentEmailContent) {
-                copyToClipboard(currentEmailContent);
-                alert('Submission details copied to clipboard again!');
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('approvalModal').style.display = 'none';
-        }
-
-        function openBook(url) {
-            window.open(url, '_blank');
-        }
-
-        // Simple animation on scroll
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.book-card, .upload-section, .library-section, .about-section, .contact-section');
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = 1;
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            });
-            
-            cards.forEach(card => {
-                card.style.opacity = 0;
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(card);
-            });
-        });
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('approvalModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
-    </script>
-</body>
-</html>
+                        <li><strong>Get Shareable Link:</strong> Right-click the file → Share → Copy link</
