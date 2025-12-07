@@ -542,40 +542,6 @@
             color: var(--primary);
         }
         
-        /* Email Notification Settings */
-        .notification-settings {
-            background: var(--light);
-            border-radius: 12px;
-            padding: 18px;
-            margin-top: 20px;
-            border-left: 4px solid #2196F3;
-            border: 1px solid var(--border-color);
-        }
-        
-        .notification-settings h4 {
-            color: var(--secondary);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1.1rem;
-        }
-        
-        .notification-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        
-        .notification-checkbox input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: var(--primary);
-        }
-        
         /* Buttons */
         .submit-btn {
             background: linear-gradient(135deg, var(--primary) 0%, var(--highlight) 100%);
@@ -729,6 +695,38 @@
             font-size: 0.8rem;
             color: var(--text-secondary);
         }
+        
+        /* Share Button on Book Cards */
+        .share-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+        
+        .book-card:hover .share-btn {
+            opacity: 1;
+        }
+        
+        .share-btn:hover {
+            background: white;
+            color: var(--highlight);
+            transform: scale(1.1);
+        }
 
         /* Admin Controls on Book Cards */
         .admin-controls {
@@ -797,41 +795,163 @@
             line-height: 1.5;
         }
 
-        /* Admin Section */
-        .admin-section {
+        /* Admin Panel Section */
+        .admin-panel-section {
             background: var(--light);
             border-radius: 12px;
             padding: 18px;
             margin-top: 20px;
             border-left: 4px solid var(--primary);
             border: 1px solid var(--border-color);
+            display: none;
+        }
+        
+        .admin-panel-section.active {
+            display: block;
         }
 
-        .admin-section h4 {
+        .admin-panel-section h4 {
             color: var(--secondary);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
-
-        .admin-section p {
+        
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        
+        .admin-tab-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .admin-tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .admin-tab-btn:hover:not(.active) {
+            background: rgba(109, 93, 110, 0.1);
+        }
+        
+        .admin-tab-content {
+            display: none;
+        }
+        
+        .admin-tab-content.active {
+            display: block;
+        }
+        
+        .admin-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .admin-list-item {
+            background: var(--bg-card);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-list-item-info {
+            flex: 1;
+        }
+        
+        .admin-list-item-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .admin-list-item-meta {
             font-size: 0.85rem;
             color: var(--text-secondary);
-            margin-bottom: 8px;
-            line-height: 1.5;
         }
-
-        .approval-steps {
-            margin-top: 12px;
-            padding-left: 18px;
+        
+        .admin-list-item-actions {
+            display: flex;
+            gap: 8px;
         }
-
-        .approval-steps li {
-            margin-bottom: 6px;
-            color: var(--text-secondary);
+        
+        .admin-action-btn {
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
             font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .admin-action-btn.approve {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .admin-action-btn.delete {
+            background: #f44336;
+            color: white;
+        }
+        
+        .admin-action-btn.view {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .admin-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .comment-item {
+            background: var(--bg-card);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .comment-book {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        
+        .comment-text {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
         }
 
         /* About Section Styles */
@@ -1010,7 +1130,7 @@
             font-size: 0.85rem;
         }
 
-        /* Modal */
+        /* Modals */
         .modal {
             display: none;
             position: fixed;
@@ -1030,12 +1150,13 @@
             background: var(--bg-card);
             padding: 25px;
             border-radius: 12px;
-            max-width: 500px;
+            max-width: 800px;
             width: 100%;
-            text-align: center;
             box-shadow: 0 10px 30px var(--shadow-hover);
             animation: slideUp 0.3s ease;
             border: 1px solid var(--border-color);
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .modal-buttons {
@@ -1120,35 +1241,157 @@
             font-size: 0.9rem;
         }
 
-        /* Rating Modal */
-        .rating-modal-content {
-            max-width: 600px;
+        /* Book Detail Modal */
+        .book-detail-modal-content {
+            max-width: 900px;
+            padding: 0;
+            overflow: hidden;
         }
-
-        .rating-stars {
+        
+        .book-detail-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 25px;
+            position: relative;
+        }
+        
+        .book-detail-header .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 5px;
-            margin: 15px 0;
-            font-size: 1.8rem;
-            color: var(--border-color);
             cursor: pointer;
+            font-size: 1.2rem;
         }
-
-        .rating-stars .star {
-            transition: color 0.2s;
+        
+        .book-detail-main {
+            display: flex;
+            padding: 25px;
+            gap: 25px;
+            flex-wrap: wrap;
         }
-
-        .rating-stars .star:hover,
-        .rating-stars .star.active {
+        
+        .book-detail-cover {
+            flex: 0 0 250px;
+        }
+        
+        .book-detail-cover img {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+        
+        .book-detail-cover .cover-placeholder {
+            width: 100%;
+            height: 350px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 4rem;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+        
+        .book-detail-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .book-detail-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .book-detail-author {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .book-detail-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .book-detail-genre {
+            background: var(--primary);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .book-detail-rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .book-detail-rating .stars {
             color: #ffc107;
         }
-
-        .comments-section {
-            margin-top: 20px;
-            text-align: left;
+        
+        .book-detail-description {
+            margin-bottom: 25px;
+            line-height: 1.7;
+            color: var(--text-secondary);
         }
-
+        
+        .book-detail-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .book-detail-btn {
+            padding: 12px 25px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .book-detail-btn.primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .book-detail-btn.secondary {
+            background: var(--light);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .book-detail-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+        
+        .book-detail-comments {
+            margin-top: 25px;
+        }
+        
         .comments-list {
             max-height: 300px;
             overflow-y: auto;
@@ -1237,6 +1480,84 @@
         .comment:hover .comment-delete-btn {
             opacity: 1;
         }
+        
+        /* Cover Photo Upload */
+        .cover-upload-area {
+            border: 2px dashed var(--primary);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            background: rgba(109, 93, 110, 0.05);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .cover-upload-area:hover {
+            background: rgba(109, 93, 110, 0.1);
+            border-color: var(--highlight);
+        }
+        
+        .cover-upload-area i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .cover-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        /* Share Modal */
+        .share-modal-content {
+            max-width: 500px;
+            text-align: center;
+        }
+        
+        .share-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .share-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            min-width: 100px;
+        }
+        
+        .share-option:hover {
+            background: var(--light);
+            transform: translateY(-3px);
+        }
+        
+        .share-option i {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+        
+        .share-link {
+            background: var(--light);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            word-break: break-all;
+            text-align: left;
+            border: 1px solid var(--border-color);
+        }
 
         /* Upload Success Message */
         .upload-success {
@@ -1299,29 +1620,6 @@
             z-index: 999;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             display: none;
-        }
-
-        /* Email Notification Status */
-        .email-status {
-            background-color: rgba(33, 150, 243, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            border-radius: 8px;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 0.85rem;
-            color: var(--text-primary);
-        }
-
-        .email-status.success {
-            background-color: rgba(76, 175, 80, 0.1);
-            border-color: rgba(76, 175, 80, 0.2);
-            color: #4CAF50;
-        }
-
-        .email-status.error {
-            background-color: rgba(244, 67, 54, 0.1);
-            border-color: rgba(244, 67, 54, 0.2);
-            color: #f44336;
         }
 
         /* Animations */
@@ -1433,6 +1731,39 @@
                 bottom: 15px;
                 right: 15px;
             }
+            
+            .book-detail-main {
+                padding: 15px;
+                flex-direction: column;
+            }
+            
+            .book-detail-cover {
+                flex: 0 0 auto;
+            }
+            
+            .book-detail-cover img,
+            .book-detail-cover .cover-placeholder {
+                height: 250px;
+            }
+            
+            .book-detail-title {
+                font-size: 1.5rem;
+            }
+            
+            .book-detail-author {
+                font-size: 1rem;
+            }
+            
+            .admin-list-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .admin-list-item-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
 
             .sorting-controls {
                 flex-direction: column;
@@ -1527,28 +1858,16 @@
                     <h2 class="section-title">Share Your Story</h2>
                     <p><strong>How it works:</strong> Upload your book to Google Drive and share the link below. All submissions will be automatically approved after 48 hours.</p>
                     
-                    <!-- Email Notification Settings -->
-                    <div class="notification-settings">
-                        <h4><i class="fas fa-bell"></i> Email Notifications</h4>
-                        <p>You will receive email notifications for:</p>
-                        <div class="notification-checkbox">
-                            <input type="checkbox" id="notifyBook" checked>
-                            <label for="notifyBook">New Book Submissions</label>
-                        </div>
-                        <div class="notification-checkbox">
-                            <input type="checkbox" id="notifyComment" checked>
-                            <label for="notifyComment">New Comments on Books</label>
-                        </div>
-                        <div class="notification-checkbox">
-                            <input type="checkbox" id="notifyRating" checked>
-                            <label for="notifyRating">New Ratings on Books</label>
-                        </div>
-                        <p><small>Admin email: <strong>tej9079917@gmail.com</strong></small></p>
+                    <!-- Book Cover Photo Upload -->
+                    <div class="form-group">
+                        <label for="bookCoverLink">Book Cover Photo (Google Drive Link)</label>
+                        <input type="url" id="bookCoverLink" placeholder="https://drive.google.com/thumbnail?id=..." class="drive-link-input">
+                        <small style="display: block; margin-top: 5px; color: var(--text-light);">Optional: Share a Google Drive link to your book cover image (use thumbnail link for faster loading)</small>
                     </div>
                     
                     <div class="upload-area" onclick="document.getElementById('driveLink').focus()">
                         <i class="fab fa-google-drive"></i>
-                        <h3>Google Drive Link</h3>
+                        <h3>Google Drive Link for Book</h3>
                         <p>Paste your shareable Google Drive link here</p>
                         <input type="url" id="driveLink" class="drive-link-input" placeholder="https://drive.google.com/file/d/...">
                     </div>
@@ -1587,6 +1906,7 @@
                                 <option value="fantasy-fiction">Fantasy Fiction</option>
                                 <option value="young-adult">Young Adult Literature</option>
                                 <option value="crime-fiction">Crime Fiction</option>
+                                <option value="crime">Crime</option> <!-- Added crime option -->
                                 <option value="literary-fiction">Literary Fiction</option>
                                 <option value="horror-fiction">Horror Fiction</option>
                                 <option value="childrens-literature">Children's Literature</option>
@@ -1647,8 +1967,40 @@
                         <p>You can view it in the "Pending Books" section until approval.</p>
                     </div>
 
+                    <!-- Admin Panel (Visible only when admin is logged in) -->
+                    <div class="admin-panel-section" id="adminPanel">
+                        <h4><i class="fas fa-user-shield"></i> Admin Control Panel</h4>
+                        
+                        <div class="admin-tabs">
+                            <button class="admin-tab-btn active" onclick="showAdminTab('pending')">Pending Books</button>
+                            <button class="admin-tab-btn" onclick="showAdminTab('all')">All Books</button>
+                            <button class="admin-tab-btn" onclick="showAdminTab('comments')">All Comments</button>
+                        </div>
+                        
+                        <!-- Pending Books Tab -->
+                        <div id="pendingTab" class="admin-tab-content active">
+                            <div class="admin-list" id="adminPendingBooksList">
+                                <!-- Pending books will be listed here -->
+                            </div>
+                        </div>
+                        
+                        <!-- All Books Tab -->
+                        <div id="allTab" class="admin-tab-content">
+                            <div class="admin-list" id="adminAllBooksList">
+                                <!-- All books will be listed here -->
+                            </div>
+                        </div>
+                        
+                        <!-- All Comments Tab -->
+                        <div id="commentsTab" class="admin-tab-content">
+                            <div class="admin-list" id="adminCommentsList">
+                                <!-- All comments will be listed here -->
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Automatic Approval Info -->
-                    <div class="admin-section">
+                    <div class="admin-section" id="autoApprovalInfo">
                         <h4><i class="fas fa-robot"></i> Automatic Approval System</h4>
                         <p>Our system automatically approves books after 48 hours without any manual intervention.</p>
                         
@@ -1701,7 +2053,7 @@
         <div id="library" class="page-section">
             <section class="library-section fade-in">
                 <h2 class="section-title">Our Story Library</h2>
-                <p>Discover amazing stories from talented writers. Click on any book to read it on Google Drive.</p>
+                <p>Discover amazing stories from talented writers. Click on any book to view details.</p>
                 
                 <!-- Sorting Controls -->
                 <div class="sorting-controls">
@@ -1753,14 +2105,14 @@
                             <p>Books approved automatically after 48 hours</p>
                         </div>
                         <div class="feature-item">
-                            <i class="fas fa-bell"></i>
-                            <h4>Email Notifications</h4>
-                            <p>Get notified about new submissions and activity</p>
+                            <i class="fas fa-images"></i>
+                            <h4>Cover Photos</h4>
+                            <p>Add book cover images to make your book stand out</p>
                         </div>
                         <div class="feature-item">
                             <i class="fas fa-share-alt"></i>
                             <h4>Easy Sharing</h4>
-                            <p>Simple Google Drive integration for easy access</p>
+                            <p>Share books with friends and on social media</p>
                         </div>
                     </div>
                 </div>
@@ -1848,58 +2200,91 @@
         </div>
     </div>
 
-    <!-- Email Modal -->
-    <div id="emailModal" class="modal">
-        <div class="modal-content">
-            <h3>Book Submission Details</h3>
-            <p>Your book submission has been recorded. Here's how to contact Tej Kumar directly:</p>
-            <div class="email-display">
-                <h4>Email Address:</h4>
-                <p id="emailDisplayText">tej9079917@gmail.com</p>
+    <!-- Book Detail Modal -->
+    <div id="bookDetailModal" class="modal">
+        <div class="modal-content book-detail-modal-content">
+            <div class="book-detail-header">
+                <button class="close-modal" onclick="closeBookDetailModal()">&times;</button>
+                <h3 id="detailBookTitle">Book Title</h3>
+                <p id="detailBookAuthor">by Author Name</p>
             </div>
-            <p>You can copy this email address to contact Tej Kumar directly about your submission.</p>
-            <div class="modal-buttons">
-                <button class="copy-btn" onclick="copyEmail()">Copy Email</button>
-                <button class="modal-ok-btn" onclick="closeModal()">Close</button>
+            <div class="book-detail-main">
+                <div class="book-detail-cover">
+                    <img id="detailBookCover" src="" alt="Book Cover" onerror="this.style.display='none'; document.getElementById('detailCoverPlaceholder').style.display='flex';">
+                    <div id="detailCoverPlaceholder" class="cover-placeholder">
+                        <i class="fas fa-book"></i>
+                    </div>
+                </div>
+                <div class="book-detail-info">
+                    <div class="book-detail-meta">
+                        <span class="book-detail-genre" id="detailBookGenre">Genre</span>
+                        <div class="book-detail-rating">
+                            <span class="stars" id="detailBookStars"></span>
+                            <span id="detailBookRating">0 (0)</span>
+                        </div>
+                    </div>
+                    <div class="book-detail-description" id="detailBookDescription">
+                        Book description will appear here...
+                    </div>
+                    <div class="book-detail-actions">
+                        <button class="book-detail-btn primary" onclick="openBookFromDetail()">
+                            <i class="fas fa-external-link-alt"></i> Read Book
+                        </button>
+                        <button class="book-detail-btn secondary" onclick="shareBookFromDetail()">
+                            <i class="fas fa-share-alt"></i> Share
+                        </button>
+                    </div>
+                    <div class="book-detail-comments">
+                        <h4>Reader Comments</h4>
+                        <div class="comments-list" id="detailCommentsList">
+                            <!-- Comments will be dynamically added here -->
+                        </div>
+                        <div class="add-comment">
+                            <h4>Add Your Comment</h4>
+                            <div class="form-group">
+                                <input type="text" id="detailCommentName" placeholder="Your Name" required>
+                            </div>
+                            <textarea id="detailCommentText" placeholder="Share your thoughts about this book..."></textarea>
+                            <button onclick="submitDetailComment()">Submit Comment</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Rating Modal -->
-    <div id="ratingModal" class="modal">
-        <div class="modal-content rating-modal-content">
-            <h3 id="ratingBookTitle">Book Title</h3>
+    <!-- Share Modal -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content share-modal-content">
+            <h3>Share This Book</h3>
+            <p>Share this amazing story with your friends!</p>
             
-            <!-- User Name Input -->
-            <div class="form-group">
-                <label for="userName">Your Name *</label>
-                <input type="text" id="userName" placeholder="Enter your name" required>
+            <div class="share-options">
+                <div class="share-option" onclick="shareViaWhatsApp()">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp</span>
+                </div>
+                <div class="share-option" onclick="shareViaTwitter()">
+                    <i class="fab fa-twitter"></i>
+                    <span>Twitter</span>
+                </div>
+                <div class="share-option" onclick="shareViaFacebook()">
+                    <i class="fab fa-facebook"></i>
+                    <span>Facebook</span>
+                </div>
+                <div class="share-option" onclick="copyShareLink()">
+                    <i class="fas fa-copy"></i>
+                    <span>Copy Link</span>
+                </div>
             </div>
             
-            <div class="rating-stars" id="ratingStars">
-                <span class="star" data-rating="1">★</span>
-                <span class="star" data-rating="2">★</span>
-                <span class="star" data-rating="3">★</span>
-                <span class="star" data-rating="4">★</span>
-                <span class="star" data-rating="5">★</span>
-            </div>
-            <p id="currentRatingText">Your rating: <span id="currentRating">0</span>/5</p>
-            
-            <div class="comments-section">
-                <h4>Reader Comments</h4>
-                <div class="comments-list" id="commentsList">
-                    <!-- Comments will be dynamically added here -->
-                </div>
-                
-                <div class="add-comment">
-                    <h4>Add Your Comment</h4>
-                    <textarea id="newComment" placeholder="Share your thoughts about this book..."></textarea>
-                    <button onclick="submitComment()">Submit Comment</button>
-                </div>
+            <div class="share-link">
+                <strong>Direct Link:</strong><br>
+                <span id="shareLinkText">https://tejkumarwritings.com/book/</span>
             </div>
             
             <div class="modal-buttons">
-                <button class="modal-ok-btn" onclick="closeRatingModal()">Close</button>
+                <button class="modal-ok-btn" onclick="closeShareModal()">Close</button>
             </div>
         </div>
     </div>
@@ -1945,13 +2330,11 @@
         
         // Admin state
         let isAdminLoggedIn = false;
+        let currentAdminTab = 'pending';
         
-        // Email notification settings
-        let notificationSettings = {
-            book: true,
-            comment: true,
-            rating: true
-        };
+        // Current book for detail modal
+        let currentBookForDetail = null;
+        let currentBookForShare = null;
 
         // Initialize books from localStorage or use sample data
         function initializeBooks() {
@@ -1965,7 +2348,7 @@
                         id: 1,
                         title: "Mr. Romeo",
                         author: "R. Tej Kumar Reddy",
-                        genre: "Mystery",
+                        genre: "Crime", // Changed to Crime genre
                         description: "It all starts here in Chapter 1: The Beginning of Darkness. Three friends in Tirupati thought they buried a secret on a lonely night. But someone was watching. Someone who believes that true love never dies—it just waits for revenge. 💔 Who is this mysterious 'Mister Romeo'? Why is he hunting them down one by one?",
                         driveLink: "https://drive.google.com/file/d/1TRsv0crqfNbTWHvF3dpMfnnOJ8H9Gbac/view?usp=drive_link",
                         coverImage: "https://drive.google.com/thumbnail?id=1hg1Jt6OgSSaQerLcWaT4WUsXC2EKeY58&sz=w1000",
@@ -1981,13 +2364,6 @@
                 saveBooks();
             }
             
-            // Load notification settings
-            const savedSettings = localStorage.getItem('notificationSettings');
-            if (savedSettings) {
-                notificationSettings = JSON.parse(savedSettings);
-                updateNotificationCheckboxes();
-            }
-            
             // Check admin login state
             checkAdminLogin();
             
@@ -2000,26 +2376,6 @@
             localStorage.setItem('tejKumarBooks', JSON.stringify(books));
         }
         
-        // Save notification settings
-        function saveNotificationSettings() {
-            localStorage.setItem('notificationSettings', JSON.stringify(notificationSettings));
-        }
-        
-        // Update notification checkboxes
-        function updateNotificationCheckboxes() {
-            document.getElementById('notifyBook').checked = notificationSettings.book;
-            document.getElementById('notifyComment').checked = notificationSettings.comment;
-            document.getElementById('notifyRating').checked = notificationSettings.rating;
-        }
-        
-        // Update notification settings from checkboxes
-        function updateNotificationSettingsFromUI() {
-            notificationSettings.book = document.getElementById('notifyBook').checked;
-            notificationSettings.comment = document.getElementById('notifyComment').checked;
-            notificationSettings.rating = document.getElementById('notifyRating').checked;
-            saveNotificationSettings();
-        }
-
         // Check and auto-approve books older than 48 hours
         function checkAutoApproval() {
             const now = Date.now();
@@ -2037,15 +2393,6 @@
                         approvedCount++;
                         
                         console.log(`Auto-approved book: ${book.title}`);
-                        
-                        // Send email notification for auto-approval
-                        if (notificationSettings.book) {
-                            sendEmailNotification('book_auto_approved', {
-                                bookTitle: book.title,
-                                bookAuthor: book.author,
-                                approvalTime: new Date().toLocaleString()
-                            });
-                        }
                     } else {
                         // Track the next book that will be approved
                         const timeRemaining = APPROVAL_DELAY - timeSinceSubmission;
@@ -2061,6 +2408,7 @@
                 saveBooks();
                 renderBooks();
                 updateNextCheckTimer();
+                renderAdminLists();
                 
                 // Show notification if on home page
                 if (document.getElementById('home').classList.contains('active') && approvedCount > 0) {
@@ -2141,137 +2489,6 @@
             
             return `${hours}h ${minutes}m`;
         }
-        
-        // Send email notification
-        function sendEmailNotification(type, data) {
-            const adminEmail = "tej9079917@gmail.com";
-            let subject = "";
-            let body = "";
-            
-            switch(type) {
-                case 'book_submission':
-                    subject = `New Book Submission: ${data.bookTitle}`;
-                    body = `A new book has been submitted to Tej Kumar Writings:\n\n` +
-                           `Title: ${data.bookTitle}\n` +
-                           `Author: ${data.bookAuthor}\n` +
-                           `Genre: ${data.bookGenre}\n` +
-                           `Submitter Email: ${data.submitterEmail}\n` +
-                           `Description: ${data.bookDescription}\n` +
-                           `Drive Link: ${data.driveLink}\n\n` +
-                           `Submitted: ${data.submissionTime}\n` +
-                           `Auto-approval in: 48 hours`;
-                    break;
-                    
-                case 'book_auto_approved':
-                    subject = `Book Auto-Approved: ${data.bookTitle}`;
-                    body = `A book has been automatically approved:\n\n` +
-                           `Title: ${data.bookTitle}\n` +
-                           `Author: ${data.bookAuthor}\n` +
-                           `Approval Time: ${data.approvalTime}\n\n` +
-                           `The book is now available in the main library.`;
-                    break;
-                    
-                case 'comment':
-                    subject = `New Comment on: ${data.bookTitle}`;
-                    body = `A new comment has been posted on "${data.bookTitle}":\n\n` +
-                           `Comment by: ${data.commentAuthor}\n` +
-                           `Comment: ${data.commentText}\n` +
-                           `Date: ${data.commentDate}\n\n` +
-                           `Book Link: ${data.bookLink}`;
-                    break;
-                    
-                case 'rating':
-                    subject = `New Rating on: ${data.bookTitle}`;
-                    body = `A new rating has been given to "${data.bookTitle}":\n\n` +
-                           `Rated by: ${data.raterName}\n` +
-                           `Rating: ${data.rating}/5\n` +
-                           `Date: ${data.ratingDate}\n\n` +
-                           `Book Link: ${data.bookLink}`;
-                    break;
-                    
-                case 'book_manual_approval':
-                    subject = `Book Manually Approved: ${data.bookTitle}`;
-                    body = `A book has been manually approved by admin:\n\n` +
-                           `Title: ${data.bookTitle}\n` +
-                           `Author: ${data.bookAuthor}\n` +
-                           `Approved by: Admin\n` +
-                           `Approval Time: ${data.approvalTime}`;
-                    break;
-                    
-                case 'book_deletion':
-                    subject = `Book Deleted: ${data.bookTitle}`;
-                    body = `A book has been deleted by admin:\n\n` +
-                           `Title: ${data.bookTitle}\n` +
-                           `Author: ${data.bookAuthor}\n` +
-                           `Deleted by: Admin\n` +
-                           `Deletion Time: ${data.deletionTime}\n` +
-                           `Reason: ${data.reason || 'Admin decision'}`;
-                    break;
-                    
-                case 'comment_deletion':
-                    subject = `Comment Deleted`;
-                    body = `A comment has been deleted by admin:\n\n` +
-                           `Book: ${data.bookTitle}\n` +
-                           `Comment Author: ${data.commentAuthor}\n` +
-                           `Comment Preview: ${data.commentPreview}\n` +
-                           `Deleted by: Admin\n` +
-                           `Deletion Time: ${data.deletionTime}\n` +
-                           `Reason: ${data.reason || 'Admin decision'}`;
-                    break;
-            }
-            
-            // Create mailto link
-            const mailtoLink = `mailto:${adminEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            
-            // Try to send email using mailto
-            try {
-                // For demo purposes, we'll simulate sending the email
-                console.log("Email notification would be sent:");
-                console.log("To:", adminEmail);
-                console.log("Subject:", subject);
-                console.log("Body:", body);
-                
-                // In a real implementation, you would use:
-                // 1. EmailJS (https://www.emailjs.com/)
-                // 2. AWS SES
-                // 3. Google Apps Script
-                // 4. A backend API
-                
-                // For now, we'll show a simulated email status
-                showEmailStatus("Email notification prepared (simulated). In production, this would be sent to tej9079917@gmail.com");
-                
-            } catch (error) {
-                console.error("Failed to send email notification:", error);
-                showEmailStatus("Failed to prepare email notification. Please check console for details.", "error");
-            }
-        }
-        
-        // Show email status
-        function showEmailStatus(message, type = "success") {
-            const statusElement = document.createElement('div');
-            statusElement.className = `email-status ${type}`;
-            statusElement.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-                ${message}
-            `;
-            
-            const uploadSection = document.querySelector('.upload-section');
-            const notificationSection = uploadSection.querySelector('.notification-settings');
-            
-            if (notificationSection) {
-                notificationSection.parentNode.insertBefore(statusElement, notificationSection.nextSibling);
-                
-                // Remove status after 5 seconds
-                setTimeout(() => {
-                    statusElement.style.opacity = '0';
-                    statusElement.style.transition = 'opacity 0.5s';
-                    setTimeout(() => statusElement.remove(), 500);
-                }, 5000);
-            }
-        }
-
-        // Currently selected book for rating modal
-        let currentBookId = null;
 
         // Theme Management
         function initializeTheme() {
@@ -2318,6 +2535,7 @@
             if (savedAdminState === 'true') {
                 isAdminLoggedIn = true;
                 updateAdminUI();
+                renderAdminLists();
             }
         }
         
@@ -2356,6 +2574,7 @@
                 isAdminLoggedIn = true;
                 localStorage.setItem('adminLoggedIn', 'true');
                 updateAdminUI();
+                renderAdminLists();
                 closeLoginModal();
                 
                 // Show success message
@@ -2377,17 +2596,23 @@
         function updateAdminUI() {
             const adminBtn = document.getElementById('adminLoginBtn');
             const adminPanelIndicator = document.getElementById('adminPanelIndicator');
+            const adminPanel = document.getElementById('adminPanel');
+            const autoApprovalInfo = document.getElementById('autoApprovalInfo');
             
             if (isAdminLoggedIn) {
                 adminBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
                 adminBtn.className = 'admin-btn logout';
                 adminBtn.onclick = adminLogout;
                 adminPanelIndicator.style.display = 'block';
+                adminPanel.style.display = 'block';
+                autoApprovalInfo.style.display = 'none';
             } else {
                 adminBtn.innerHTML = '<i class="fas fa-user-shield"></i> Admin Login';
                 adminBtn.className = 'admin-btn';
                 adminBtn.onclick = showLoginModal;
                 adminPanelIndicator.style.display = 'none';
+                adminPanel.style.display = 'none';
+                autoApprovalInfo.style.display = 'block';
             }
             
             // Re-render books to show/hide admin controls
@@ -2401,7 +2626,7 @@
             notification.style.animation = 'fadeIn 0.5s ease';
             notification.innerHTML = `
                 <h4><i class="fas fa-user-shield"></i> Admin Login Successful!</h4>
-                <p>You now have admin privileges. You can remove books/comments and manually approve books.</p>
+                <p>You now have admin privileges. You can approve books immediately and manage content.</p>
             `;
             
             const uploadSection = document.querySelector('.upload-section');
@@ -2434,42 +2659,143 @@
             }, 5000);
         }
         
-        // Admin Book Functions
-        function deleteBook(bookId, event) {
-            event.stopPropagation();
+        // Admin Panel Functions
+        function showAdminTab(tabName) {
+            currentAdminTab = tabName;
             
-            if (!isAdminLoggedIn) {
-                alert('Admin login required to delete books.');
+            // Update tab buttons
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show selected tab content
+            document.querySelectorAll('.admin-tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            // Render the tab content
+            renderAdminLists();
+        }
+        
+        function renderAdminLists() {
+            if (!isAdminLoggedIn) return;
+            
+            renderAdminPendingBooksList();
+            renderAdminAllBooksList();
+            renderAdminCommentsList();
+        }
+        
+        function renderAdminPendingBooksList() {
+            const pendingBooksList = document.getElementById('adminPendingBooksList');
+            const pendingBooks = books.filter(book => !book.approved);
+            
+            if (pendingBooks.length === 0) {
+                pendingBooksList.innerHTML = '<p>No pending books at the moment.</p>';
                 return;
             }
             
-            if (confirm('Are you sure you want to delete this book? This action cannot be undone.')) {
-                const bookIndex = books.findIndex(book => book.id === bookId);
-                if (bookIndex !== -1) {
-                    const bookTitle = books[bookIndex].title;
-                    const bookAuthor = books[bookIndex].author;
-                    books.splice(bookIndex, 1);
-                    saveBooks();
-                    renderBooks();
-                    
-                    // Send email notification for book deletion
-                    if (notificationSettings.book) {
-                        sendEmailNotification('book_deletion', {
-                            bookTitle: bookTitle,
-                            bookAuthor: bookAuthor,
-                            deletionTime: new Date().toLocaleString()
-                        });
-                    }
-                    
-                    // Show deletion confirmation
-                    showDeletionNotification(`Book "${bookTitle}" has been deleted.`);
-                }
-            }
+            let html = '';
+            pendingBooks.forEach(book => {
+                const timeRemaining = getTimeRemaining(book.submissionTime);
+                html += `
+                    <div class="admin-list-item">
+                        <div class="admin-list-item-info">
+                            <div class="admin-list-item-title">${book.title}</div>
+                            <div class="admin-list-item-meta">
+                                by ${book.author} | ${book.genre} | Submitted: ${book.uploadDate} | Auto-approval in: ${timeRemaining}
+                            </div>
+                        </div>
+                        <div class="admin-list-item-actions">
+                            <button class="admin-action-btn approve" onclick="adminApproveBook(${book.id})">Approve Now</button>
+                            <button class="admin-action-btn delete" onclick="adminDeleteBook(${book.id})">Delete</button>
+                            <button class="admin-action-btn view" onclick="viewBookDetails(${book.id})">View</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            pendingBooksList.innerHTML = html;
         }
         
-        function approveBook(bookId, event) {
-            event.stopPropagation();
+        function renderAdminAllBooksList() {
+            const allBooksList = document.getElementById('adminAllBooksList');
             
+            if (books.length === 0) {
+                allBooksList.innerHTML = '<p>No books in the library yet.</p>';
+                return;
+            }
+            
+            let html = '';
+            books.forEach(book => {
+                const status = book.approved ? 'Approved' : 'Pending';
+                html += `
+                    <div class="admin-list-item">
+                        <div class="admin-list-item-info">
+                            <div class="admin-list-item-title">${book.title}</div>
+                            <div class="admin-list-item-meta">
+                                by ${book.author} | ${book.genre} | Status: ${status} | Rating: ${book.rating.toFixed(1)} (${book.ratingsCount})
+                            </div>
+                        </div>
+                        <div class="admin-list-item-actions">
+                            ${!book.approved ? `<button class="admin-action-btn approve" onclick="adminApproveBook(${book.id})">Approve</button>` : ''}
+                            <button class="admin-action-btn delete" onclick="adminDeleteBook(${book.id})">Delete</button>
+                            <button class="admin-action-btn view" onclick="viewBookDetails(${book.id})">View</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            allBooksList.innerHTML = html;
+        }
+        
+        function renderAdminCommentsList() {
+            const commentsList = document.getElementById('adminCommentsList');
+            let allComments = [];
+            
+            // Collect all comments from all books
+            books.forEach(book => {
+                book.comments.forEach((comment, index) => {
+                    allComments.push({
+                        bookId: book.id,
+                        bookTitle: book.title,
+                        commentIndex: index,
+                        author: comment.author,
+                        date: comment.date,
+                        text: comment.text
+                    });
+                });
+            });
+            
+            if (allComments.length === 0) {
+                commentsList.innerHTML = '<p>No comments yet.</p>';
+                return;
+            }
+            
+            let html = '';
+            allComments.forEach(comment => {
+                const shortText = comment.text.length > 100 ? comment.text.substring(0, 100) + '...' : comment.text;
+                html += `
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-author">${comment.author}</span>
+                            <span class="comment-date">${comment.date}</span>
+                        </div>
+                        <div class="comment-book">On: "${comment.bookTitle}"</div>
+                        <div class="comment-text">${shortText}</div>
+                        <div class="admin-list-item-actions">
+                            <button class="admin-action-btn delete" onclick="adminDeleteComment(${comment.bookId}, ${comment.commentIndex})">Delete Comment</button>
+                            <button class="admin-action-btn view" onclick="viewBookDetails(${comment.bookId})">View Book</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            commentsList.innerHTML = html;
+        }
+        
+        function adminApproveBook(bookId) {
             if (!isAdminLoggedIn) {
                 alert('Admin login required to approve books.');
                 return;
@@ -2481,24 +2807,35 @@
                 book.approvalTime = Date.now();
                 saveBooks();
                 renderBooks();
-                
-                // Send email notification for manual approval
-                if (notificationSettings.book) {
-                    sendEmailNotification('book_manual_approval', {
-                        bookTitle: book.title,
-                        bookAuthor: book.author,
-                        approvalTime: new Date().toLocaleString()
-                    });
-                }
+                renderAdminLists();
                 
                 // Show approval confirmation
-                showApprovalNotification(`Book "${book.title}" has been manually approved.`);
+                showAdminActionNotification(`Book "${book.title}" has been approved immediately.`);
             }
         }
         
-        function deleteComment(bookId, commentIndex, event) {
-            event.stopPropagation();
+        function adminDeleteBook(bookId) {
+            if (!isAdminLoggedIn) {
+                alert('Admin login required to delete books.');
+                return;
+            }
             
+            if (confirm('Are you sure you want to delete this book? This action cannot be undone.')) {
+                const bookIndex = books.findIndex(book => book.id === bookId);
+                if (bookIndex !== -1) {
+                    const bookTitle = books[bookIndex].title;
+                    books.splice(bookIndex, 1);
+                    saveBooks();
+                    renderBooks();
+                    renderAdminLists();
+                    
+                    // Show deletion confirmation
+                    showAdminActionNotification(`Book "${bookTitle}" has been deleted.`);
+                }
+            }
+        }
+        
+        function adminDeleteComment(bookId, commentIndex) {
             if (!isAdminLoggedIn) {
                 alert('Admin login required to delete comments.');
                 return;
@@ -2514,56 +2851,32 @@
                     book.comments.splice(commentIndex, 1);
                     saveBooks();
                     
-                    // Send email notification for comment deletion
-                    if (notificationSettings.comment) {
-                        sendEmailNotification('comment_deletion', {
-                            bookTitle: book.title,
-                            commentAuthor: commentAuthor,
-                            commentPreview: commentPreview,
-                            deletionTime: new Date().toLocaleString()
-                        });
+                    // Re-render detail modal if it's open
+                    if (currentBookForDetail && currentBookForDetail.id === bookId) {
+                        openBookDetail(bookId);
                     }
                     
-                    // Re-render rating modal if it's open
-                    if (currentBookId === bookId) {
-                        openRatingModal(bookId);
-                    }
+                    // Update admin lists
+                    renderAdminLists();
                     
                     // Show deletion confirmation
-                    showDeletionNotification(`Comment by "${commentAuthor}" has been deleted.`);
+                    showAdminActionNotification(`Comment by "${commentAuthor}" has been deleted.`);
                 }
             }
         }
         
-        function showDeletionNotification(message) {
-            const notification = document.createElement('div');
-            notification.className = 'upload-success';
-            notification.style.display = 'block';
-            notification.style.animation = 'fadeIn 0.5s ease';
-            notification.style.backgroundColor = 'rgba(244, 67, 54, 0.1)';
-            notification.style.borderColor = 'rgba(244, 67, 54, 0.3)';
-            notification.innerHTML = `
-                <h4><i class="fas fa-trash-alt"></i> Item Deleted</h4>
-                <p>${message}</p>
-            `;
-            
-            const uploadSection = document.querySelector('.upload-section');
-            uploadSection.insertBefore(notification, uploadSection.querySelector('.admin-section'));
-            
-            // Remove notification after 5 seconds
-            setTimeout(() => {
-                notification.style.animation = 'fadeIn 0.5s ease reverse';
-                setTimeout(() => notification.remove(), 500);
-            }, 5000);
+        function viewBookDetails(bookId) {
+            closeBookDetailModal(); // Close if open
+            openBookDetail(bookId);
         }
         
-        function showApprovalNotification(message) {
+        function showAdminActionNotification(message) {
             const notification = document.createElement('div');
             notification.className = 'upload-success';
             notification.style.display = 'block';
             notification.style.animation = 'fadeIn 0.5s ease';
             notification.innerHTML = `
-                <h4><i class="fas fa-check-circle"></i> Book Approved</h4>
+                <h4><i class="fas fa-check-circle"></i> Admin Action Complete</h4>
                 <p>${message}</p>
             `;
             
@@ -2592,6 +2905,9 @@
                 document.querySelector('.main-content').style.display = 'flex';
                 renderBooks();
                 updateNextCheckTimer();
+                if (isAdminLoggedIn) {
+                    renderAdminLists();
+                }
             } else {
                 document.querySelector('.main-content').style.display = 'none';
             }
@@ -2630,6 +2946,7 @@
             const bookDescription = document.getElementById('bookDescription').value;
             const bookGenre = document.getElementById('bookGenre').value;
             const submitterEmail = document.getElementById('submitterEmail').value;
+            const bookCoverLink = document.getElementById('bookCoverLink').value;
             
             // Basic validation
             if (!driveLink || !bookTitle || !bookAuthor || !submitterEmail) {
@@ -2659,7 +2976,7 @@
                 genre: bookGenre || "Other",
                 description: bookDescription,
                 driveLink: driveLink,
-                coverImage: "", // No cover image for new submissions
+                coverImage: bookCoverLink || "", // Added cover image support
                 uploadDate: new Date().toISOString().split('T')[0], // Today's date
                 submissionTime: Date.now(), // Current timestamp for auto-approval
                 approved: false, // Not approved yet
@@ -2672,22 +2989,6 @@
             books.push(newBook);
             saveBooks();
             
-            // Update notification settings
-            updateNotificationSettingsFromUI();
-            
-            // Send email notification for new book submission
-            if (notificationSettings.book) {
-                sendEmailNotification('book_submission', {
-                    bookTitle: bookTitle,
-                    bookAuthor: bookAuthor,
-                    bookGenre: bookGenre,
-                    bookDescription: bookDescription,
-                    submitterEmail: submitterEmail,
-                    driveLink: driveLink,
-                    submissionTime: new Date().toLocaleString()
-                });
-            }
-            
             // Show success message
             showUploadSuccess();
             
@@ -2698,10 +2999,16 @@
             document.getElementById('bookDescription').value = '';
             document.getElementById('bookGenre').value = '';
             document.getElementById('submitterEmail').value = '';
+            document.getElementById('bookCoverLink').value = '';
             
             // Re-render books to show the new addition
             renderBooks();
             updateNextCheckTimer();
+            
+            // Update admin lists if admin is logged in
+            if (isAdminLoggedIn) {
+                renderAdminLists();
+            }
             
             // Show confirmation modal
             document.getElementById('confirmationModal').style.display = 'flex';
@@ -2718,11 +3025,6 @@
             }, 5000);
         }
 
-        // Open Book
-        function openBook(bookUrl) {
-            window.open(bookUrl, '_blank');
-        }
-
         // Scroll to Top
         function scrollToTop() {
             window.scrollTo({top: 0, behavior: 'smooth'});
@@ -2731,19 +3033,196 @@
         // Modal Functions
         function closeModal() {
             document.getElementById('confirmationModal').style.display = 'none';
-            document.getElementById('emailModal').style.display = 'none';
+        }
+        
+        function closeBookDetailModal() {
+            document.getElementById('bookDetailModal').style.display = 'none';
+            currentBookForDetail = null;
+        }
+        
+        function closeShareModal() {
+            document.getElementById('shareModal').style.display = 'none';
+            currentBookForShare = null;
         }
 
-        function copyEmail() {
-            const emailText = document.getElementById('emailDisplayText').textContent;
-            navigator.clipboard.writeText(emailText).then(() => {
-                alert('Email address copied to clipboard!');
+        // Open Book Detail Modal
+        function openBookDetail(bookId) {
+            const book = books.find(b => b.id === bookId);
+            if (!book) return;
+            
+            currentBookForDetail = book;
+            
+            // Set book details in modal
+            document.getElementById('detailBookTitle').textContent = book.title;
+            document.getElementById('detailBookAuthor').textContent = `by ${book.author}`;
+            document.getElementById('detailBookGenre').textContent = book.genre;
+            document.getElementById('detailBookDescription').textContent = book.description || "No description available.";
+            document.getElementById('detailBookRating').textContent = `${book.rating.toFixed(1)} (${book.ratingsCount})`;
+            
+            // Set book cover
+            const coverImg = document.getElementById('detailBookCover');
+            const coverPlaceholder = document.getElementById('detailCoverPlaceholder');
+            if (book.coverImage) {
+                coverImg.src = book.coverImage;
+                coverImg.style.display = 'block';
+                coverPlaceholder.style.display = 'none';
+            } else {
+                coverImg.style.display = 'none';
+                coverPlaceholder.style.display = 'flex';
+            }
+            
+            // Generate star rating
+            document.getElementById('detailBookStars').innerHTML = generateStarRating(book.rating);
+            
+            // Render comments
+            const commentsList = document.getElementById('detailCommentsList');
+            commentsList.innerHTML = '';
+            
+            if (book.comments.length === 0) {
+                commentsList.innerHTML = '<p>No comments yet. Be the first to share your thoughts!</p>';
+            } else {
+                book.comments.forEach((comment, index) => {
+                    const commentElement = document.createElement('div');
+                    commentElement.className = 'comment';
+                    
+                    // Add delete button for admin
+                    let deleteBtn = '';
+                    if (isAdminLoggedIn) {
+                        deleteBtn = `<button class="comment-delete-btn" onclick="adminDeleteComment(${book.id}, ${index}, event)" title="Delete Comment">
+                            <i class="fas fa-trash"></i>
+                        </button>`;
+                    }
+                    
+                    commentElement.innerHTML = `
+                        <div class="comment-header">
+                            <span class="comment-author">${comment.author}</span>
+                            <span class="comment-date">${comment.date}</span>
+                        </div>
+                        <div class="comment-text">${comment.text}</div>
+                        ${deleteBtn}
+                    `;
+                    commentsList.appendChild(commentElement);
+                });
+            }
+            
+            // Clear comment input fields
+            document.getElementById('detailCommentName').value = '';
+            document.getElementById('detailCommentText').value = '';
+            
+            // Show modal
+            document.getElementById('bookDetailModal').style.display = 'flex';
+        }
+        
+        // Open book from detail modal
+        function openBookFromDetail() {
+            if (currentBookForDetail && currentBookForDetail.driveLink) {
+                window.open(currentBookForDetail.driveLink, '_blank');
+            }
+        }
+        
+        // Share book from detail modal
+        function shareBookFromDetail() {
+            if (currentBookForDetail) {
+                openShareModal(currentBookForDetail);
+            }
+        }
+        
+        // Submit comment in detail modal
+        function submitDetailComment() {
+            const commentName = document.getElementById('detailCommentName').value.trim();
+            const commentText = document.getElementById('detailCommentText').value.trim();
+            
+            if (!commentName) {
+                alert('Please enter your name before submitting a comment.');
+                return;
+            }
+            
+            if (!commentText) {
+                alert('Please enter a comment before submitting.');
+                return;
+            }
+            
+            if (!currentBookForDetail) return;
+            
+            const book = books.find(b => b.id === currentBookForDetail.id);
+            if (!book) return;
+            
+            // Add new comment
+            const newComment = {
+                author: commentName,
+                date: new Date().toISOString().split('T')[0],
+                text: commentText
+            };
+            
+            book.comments.push(newComment);
+            saveBooks();
+            
+            // Clear comment field
+            document.getElementById('detailCommentText').value = '';
+            
+            // Re-render comments
+            openBookDetail(book.id);
+            
+            // Update admin lists if admin is logged in
+            if (isAdminLoggedIn) {
+                renderAdminLists();
+            }
+        }
+        
+        // Share Functions
+        function shareBook(bookId, event) {
+            if (event) event.stopPropagation();
+            const book = books.find(b => b.id === bookId);
+            if (book) {
+                openShareModal(book);
+            }
+        }
+        
+        function openShareModal(book) {
+            currentBookForShare = book;
+            document.getElementById('shareLinkText').textContent = book.driveLink;
+            document.getElementById('shareModal').style.display = 'flex';
+        }
+        
+        function shareViaWhatsApp() {
+            if (!currentBookForShare) return;
+            
+            const text = `Check out "${currentBookForShare.title}" by ${currentBookForShare.author} on Tej Kumar Writings!`;
+            const url = `https://wa.me/?text=${encodeURIComponent(text + ' ' + currentBookForShare.driveLink)}`;
+            window.open(url, '_blank');
+        }
+        
+        function shareViaTwitter() {
+            if (!currentBookForShare) return;
+            
+            const text = `Check out "${currentBookForShare.title}" by ${currentBookForShare.author} on Tej Kumar Writings!`;
+            const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(currentBookForShare.driveLink)}`;
+            window.open(url, '_blank');
+        }
+        
+        function shareViaFacebook() {
+            if (!currentBookForShare) return;
+            
+            const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentBookForShare.driveLink)}`;
+            window.open(url, '_blank');
+        }
+        
+        function copyShareLink() {
+            if (!currentBookForShare) return;
+            
+            navigator.clipboard.writeText(currentBookForShare.driveLink).then(() => {
+                alert('Book link copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy link: ', err);
+                // Fallback method
+                const tempInput = document.createElement('input');
+                tempInput.value = currentBookForShare.driveLink;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                alert('Book link copied to clipboard!');
             });
-        }
-
-        // Show email modal (for direct contact)
-        function showEmailModal() {
-            document.getElementById('emailModal').style.display = 'flex';
         }
 
         // Render books in the library
@@ -2777,7 +3256,10 @@
                 approvedBooks.forEach(book => {
                     const bookCard = createBookCard(book, false);
                     approvedBookList.appendChild(bookCard);
-                    bookListLibrary.appendChild(bookCard.cloneNode(true));
+                    
+                    // Clone for library section
+                    const libraryCard = createBookCard(book, false);
+                    bookListLibrary.appendChild(libraryCard);
                 });
             }
             
@@ -2816,25 +3298,41 @@
                 statusBadge = `<div class="book-status status-approved">Approved</div>`;
             }
             
+            // Share button (only for approved books)
+            let shareButton = '';
+            if (!isPending) {
+                shareButton = `<button class="share-btn" onclick="shareBook(${book.id}, event)" title="Share this book">
+                    <i class="fas fa-share-alt"></i>
+                </button>`;
+            }
+            
             // Admin controls
             let adminControls = '';
             if (isAdminLoggedIn) {
                 adminControls = `
                     <div class="admin-controls">
-                        ${isPending ? `<button class="admin-control-btn approve" onclick="approveBook(${book.id}, event)" title="Approve Book">
+                        ${isPending ? `<button class="admin-control-btn approve" onclick="adminApproveBook(${book.id})" title="Approve Book Immediately">
                             <i class="fas fa-check"></i>
                         </button>` : ''}
-                        <button class="admin-control-btn delete" onclick="deleteBook(${book.id}, event)" title="Delete Book">
+                        <button class="admin-control-btn delete" onclick="adminDeleteBook(${book.id})" title="Delete Book">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
                 `;
             }
             
+            // Click handler for book card
+            bookCard.onclick = function(event) {
+                // Don't open detail if clicking on share button or admin controls
+                if (!event.target.closest('.share-btn') && !event.target.closest('.admin-controls')) {
+                    openBookDetail(book.id);
+                }
+            };
+            
             bookCard.innerHTML = `
-                <div class="book-cover" onclick="openBook('${book.driveLink}')">
+                <div class="book-cover">
                     ${book.coverImage ? 
-                        `<img src="${book.coverImage}" alt="${book.title} Cover">` : 
+                        `<img src="${book.coverImage}" alt="${book.title} Cover" onerror="this.style.display='none';">` : 
                         `<i class="fas fa-book"></i>`
                     }
                 </div>
@@ -2843,10 +3341,11 @@
                 <div class="book-genre">${book.genre}</div>
                 ${statusBadge}
                 ${!isPending ? `
-                <div class="book-rating" onclick="event.stopPropagation(); openRatingModal(${book.id})">
+                <div class="book-rating">
                     <div class="stars">${starsHTML}</div>
-                    <div class="rating-value">${book.rating} (${book.ratingsCount})</div>
+                    <div class="rating-value">${book.rating.toFixed(1)} (${book.ratingsCount})</div>
                 </div>` : ''}
+                ${shareButton}
                 ${adminControls}
             `;
             
@@ -2899,116 +3398,6 @@
             renderBooks();
         }
 
-        // Open rating modal
-        function openRatingModal(bookId) {
-            currentBookId = bookId;
-            const book = books.find(b => b.id === bookId);
-            
-            if (!book) return;
-            
-            document.getElementById('ratingBookTitle').textContent = book.title;
-            document.getElementById('currentRating').textContent = book.rating;
-            
-            // Reset user name input
-            document.getElementById('userName').value = '';
-            
-            // Reset stars
-            const stars = document.querySelectorAll('#ratingStars .star');
-            stars.forEach(star => {
-                star.classList.remove('active');
-                if (parseInt(star.getAttribute('data-rating')) <= Math.floor(book.rating)) {
-                    star.classList.add('active');
-                }
-            });
-            
-            // Render comments
-            const commentsList = document.getElementById('commentsList');
-            commentsList.innerHTML = '';
-            
-            if (book.comments.length === 0) {
-                commentsList.innerHTML = '<p>No comments yet. Be the first to share your thoughts!</p>';
-            } else {
-                book.comments.forEach((comment, index) => {
-                    const commentElement = document.createElement('div');
-                    commentElement.className = 'comment';
-                    
-                    // Add delete button for admin
-                    let deleteBtn = '';
-                    if (isAdminLoggedIn) {
-                        deleteBtn = `<button class="comment-delete-btn" onclick="deleteComment(${book.id}, ${index}, event)" title="Delete Comment">
-                            <i class="fas fa-trash"></i>
-                        </button>`;
-                    }
-                    
-                    commentElement.innerHTML = `
-                        <div class="comment-header">
-                            <span class="comment-author">${comment.author}</span>
-                            <span class="comment-date">${comment.date}</span>
-                        </div>
-                        <div class="comment-text">${comment.text}</div>
-                        ${deleteBtn}
-                    `;
-                    commentsList.appendChild(commentElement);
-                });
-            }
-            
-            document.getElementById('ratingModal').style.display = 'flex';
-        }
-
-        // Close rating modal
-        function closeRatingModal() {
-            document.getElementById('ratingModal').style.display = 'none';
-            currentBookId = null;
-        }
-
-        // Submit a comment
-        function submitComment() {
-            const commentText = document.getElementById('newComment').value.trim();
-            const userName = document.getElementById('userName').value.trim();
-            
-            if (!userName) {
-                alert('Please enter your name before submitting a comment.');
-                return;
-            }
-            
-            if (!commentText) {
-                alert('Please enter a comment before submitting.');
-                return;
-            }
-            
-            if (!currentBookId) return;
-            
-            const book = books.find(b => b.id === currentBookId);
-            if (!book) return;
-            
-            // Add new comment
-            const newComment = {
-                author: userName,
-                date: new Date().toISOString().split('T')[0],
-                text: commentText
-            };
-            
-            book.comments.push(newComment);
-            saveBooks();
-            
-            // Send email notification for new comment
-            if (notificationSettings.comment) {
-                sendEmailNotification('comment', {
-                    bookTitle: book.title,
-                    commentAuthor: userName,
-                    commentText: commentText,
-                    commentDate: new Date().toLocaleString(),
-                    bookLink: book.driveLink
-                });
-            }
-            
-            // Clear comment field
-            document.getElementById('newComment').value = '';
-            
-            // Re-render comments
-            openRatingModal(currentBookId);
-        }
-
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize theme first
@@ -3020,66 +3409,8 @@
             // Setup password toggle
             document.getElementById('togglePassword').addEventListener('click', togglePasswordVisibility);
             
-            // Setup notification checkboxes
-            document.querySelectorAll('.notification-checkbox input').forEach(checkbox => {
-                checkbox.addEventListener('change', updateNotificationSettingsFromUI);
-            });
-            
             // Then show default section and render books
             showSection('home');
-            
-            // Add event listeners for rating stars
-            const stars = document.querySelectorAll('#ratingStars .star');
-            stars.forEach(star => {
-                star.addEventListener('click', function() {
-                    const userName = document.getElementById('userName').value.trim();
-                    
-                    if (!userName) {
-                        alert('Please enter your name before rating this book.');
-                        return;
-                    }
-                    
-                    const rating = parseInt(this.getAttribute('data-rating'));
-                    
-                    // Update stars appearance
-                    stars.forEach(s => {
-                        if (parseInt(s.getAttribute('data-rating')) <= rating) {
-                            s.classList.add('active');
-                        } else {
-                            s.classList.remove('active');
-                        }
-                    });
-                    
-                    // Update rating text
-                    document.getElementById('currentRating').textContent = rating;
-                    
-                    // Update the book's rating in the array
-                    if (currentBookId) {
-                        const book = books.find(b => b.id === currentBookId);
-                        if (book) {
-                            // Simple average calculation
-                            const newTotalRating = (book.rating * book.ratingsCount) + rating;
-                            book.ratingsCount += 1;
-                            book.rating = newTotalRating / book.ratingsCount;
-                            saveBooks();
-                            
-                            // Send email notification for new rating
-                            if (notificationSettings.rating) {
-                                sendEmailNotification('rating', {
-                                    bookTitle: book.title,
-                                    raterName: userName,
-                                    rating: rating,
-                                    ratingDate: new Date().toLocaleString(),
-                                    bookLink: book.driveLink
-                                });
-                            }
-                            
-                            // Re-render books to show updated rating
-                            renderBooks();
-                        }
-                    }
-                });
-            });
             
             // Update next check timer every minute
             setInterval(updateNextCheckTimer, 60000);
