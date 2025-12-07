@@ -1422,9 +1422,6 @@
         // Admin state
         let isAdminLoggedIn = false;
         let currentAdminTab = 'pending';
-        
-        // Track pending book for timer
-        let currentPendingBookForTimer = null;
 
         // Initialize books from localStorage or use sample data
         function initializeBooks() {
@@ -1444,7 +1441,7 @@
             
             saveBooks();
             checkAdminLogin();
-            renderBooks();
+            renderAllBooks(); // Use the new unified render function
             checkAutoApproval();
             updateNextCheckTimer();
         }
@@ -1485,28 +1482,21 @@
             const now = Date.now();
             let approvedCount = 0;
             
-            // Create a copy to avoid modification during iteration
-            const booksToCheck = [...books];
-            
-            booksToCheck.forEach(book => {
+            books.forEach(book => {
                 if (!book.approved && book.submissionTime) {
                     const timeSinceSubmission = now - book.submissionTime;
                     
                     if (timeSinceSubmission >= APPROVAL_DELAY) {
-                        // Find the actual book in the array
-                        const bookIndex = books.findIndex(b => b.id === book.id);
-                        if (bookIndex !== -1) {
-                            books[bookIndex].approved = true;
-                            books[bookIndex].approvalTime = now;
-                            approvedCount++;
-                        }
+                        book.approved = true;
+                        book.approvalTime = now;
+                        approvedCount++;
                     }
                 }
             });
             
             if (approvedCount > 0) {
                 saveBooks();
-                renderBooks();
+                renderAllBooks(); // Re-render all book displays
                 updateNextCheckTimer();
                 if (isAdminLoggedIn) {
                     renderAdminLists();
@@ -1520,7 +1510,7 @@
             updateNextCheckTimer();
         }
         
-        // Update next check timer display - FIXED to handle deleted books
+        // Update next check timer display
         function updateNextCheckTimer() {
             const now = Date.now();
             let nextCheck = null;
@@ -1541,14 +1531,6 @@
             if (!timerElement) return;
             
             if (nextCheck && earliestBook) {
-                // Verify the book still exists
-                const bookExists = books.some(book => book.id === earliestBook.id);
-                if (!bookExists) {
-                    // Book was deleted, recalculate
-                    updateNextCheckTimer();
-                    return;
-                }
-                
                 const timeRemaining = nextCheck - now;
                 if (timeRemaining > 0) {
                     const hours = Math.floor(timeRemaining / (60 * 60 * 1000));
@@ -1556,15 +1538,12 @@
                     
                     timerElement.innerHTML = `<strong>Next auto-approval:</strong> ${hours}h ${minutes}m<br>
                                              <small>For: "${earliestBook.title}"</small>`;
-                    currentPendingBookForTimer = earliestBook.id;
                 } else {
                     timerElement.textContent = "Checking for approvals now...";
-                    currentPendingBookForTimer = null;
                     setTimeout(checkAutoApproval, 1000);
                 }
             } else {
                 timerElement.textContent = "No pending books waiting for approval";
-                currentPendingBookForTimer = null;
             }
         }
         
@@ -1709,7 +1688,7 @@
                 autoApprovalInfo.style.display = 'block';
             }
             
-            renderBooks();
+            renderAllBooks(); // Re-render books to show/hide admin controls
         }
         
         // Admin Panel Functions
@@ -1797,6 +1776,7 @@
             allBooksList.innerHTML = html;
         }
         
+        // FIXED: Admin Approve Book Function
         function adminApproveBook(bookId) {
             if (!isAdminLoggedIn) {
                 alert('Admin login required to approve books.');
@@ -1808,14 +1788,24 @@
                 book.approved = true;
                 book.approvalTime = Date.now();
                 saveBooks();
-                renderBooks();
+                
+                // Re-render ALL book displays
+                renderAllBooks();
+                
+                // Update admin lists
                 renderAdminLists();
-                updateNextCheckTimer(); // Update timer after approval
-                showNotification(`Book "${book.title}" approved!`, 'success');
+                
+                // Update timer
+                updateNextCheckTimer();
+                
+                showNotification(`Book "${book.title}" approved and moved to library!`, 'success');
+                
+                console.log(`Book approved: ${book.title}, Approved: ${book.approved}`);
+                console.log(`Total books: ${books.length}, Approved books: ${books.filter(b => b.approved).length}`);
             }
         }
         
-        // DELETE BOOK FUNCTION - FIXED to update timer
+        // FIXED: Delete Book Function
         function adminDeleteBook(bookId) {
             if (!isAdminLoggedIn) {
                 alert('Admin login required to delete books.');
@@ -1827,26 +1817,162 @@
                 if (bookIndex !== -1) {
                     const bookTitle = books[bookIndex].title;
                     
-                    // Check if this is the book currently shown in timer
-                    const wasTimerBook = (currentPendingBookForTimer === bookId);
-                    
                     // Remove the book
                     books.splice(bookIndex, 1);
                     saveBooks();
-                    renderBooks();
+                    
+                    // Re-render all book displays
+                    renderAllBooks();
+                    
+                    // Update admin lists
                     renderAdminLists();
                     
-                    // Update timer immediately to remove reference to deleted book
+                    // Update timer
                     updateNextCheckTimer();
                     
                     showNotification(`Book "${bookTitle}" deleted.`, 'success');
-                    
-                    // If it was the timer book, force a timer refresh
-                    if (wasTimerBook) {
-                        setTimeout(updateNextCheckTimer, 100);
-                    }
                 }
             }
+        }
+        
+        // NEW: Unified function to render ALL book displays
+        function renderAllBooks() {
+            console.log("Rendering all books...");
+            console.log("Total books:", books.length);
+            console.log("Approved books:", books.filter(b => b.approved).length);
+            console.log("Pending books:", books.filter(b => !b.approved).length);
+            
+            // Clear all book lists
+            const approvedBookList = document.getElementById('approvedBookList');
+            const pendingBookList = document.getElementById('pendingBookList');
+            const bookListLibrary = document.getElementById('bookListLibrary');
+            
+            if (approvedBookList) approvedBookList.innerHTML = '';
+            if (pendingBookList) pendingBookList.innerHTML = '';
+            if (bookListLibrary) bookListLibrary.innerHTML = '';
+            
+            // Separate approved and pending books
+            const approvedBooks = books.filter(book => book.approved);
+            const pendingBooks = books.filter(book => !book.approved);
+            
+            console.log("Approved books to render:", approvedBooks.length);
+            console.log("Pending books to render:", pendingBooks.length);
+            
+            // Render approved books in home section
+            if (approvedBooks.length === 0) {
+                if (approvedBookList) {
+                    approvedBookList.innerHTML = `
+                        <div style="text-align: center; padding: 40px 20px; color: var(--text-light); width: 100%;">
+                            <i class="fas fa-book-open" style="font-size: 3rem; margin-bottom: 15px; color: var(--text-light);"></i>
+                            <h3 style="margin-bottom: 10px; color: var(--secondary); font-size: 1.3rem;">No Approved Books Yet</h3>
+                            <p style="font-size: 0.95rem; line-height: 1.5;">Be the first to submit a book to our library!</p>
+                        </div>
+                    `;
+                }
+            } else {
+                approvedBooks.forEach(book => {
+                    if (approvedBookList) {
+                        const bookCard = createBookCard(book, false);
+                        approvedBookList.appendChild(bookCard);
+                    }
+                    
+                    // Also add to library section if it exists
+                    if (bookListLibrary) {
+                        const libraryCard = createBookCard(book, false);
+                        bookListLibrary.appendChild(libraryCard);
+                    }
+                });
+            }
+            
+            // Render pending books in home section
+            if (pendingBooks.length === 0) {
+                if (pendingBookList) {
+                    pendingBookList.innerHTML = `
+                        <div style="text-align: center; padding: 40px 20px; color: var(--text-light); width: 100%;">
+                            <i class="fas fa-clock" style="font-size: 3rem; margin-bottom: 15px; color: var(--text-light);"></i>
+                            <h3 style="margin-bottom: 10px; color: var(--secondary); font-size: 1.3rem;">No Pending Books</h3>
+                            <p style="font-size: 0.95rem; line-height: 1.5;">All books have been approved!</p>
+                        </div>
+                    `;
+                }
+            } else {
+                pendingBooks.forEach(book => {
+                    if (pendingBookList) {
+                        const bookCard = createBookCard(book, true);
+                        pendingBookList.appendChild(bookCard);
+                    }
+                });
+            }
+            
+            // If library section is empty, show message
+            if (bookListLibrary && bookListLibrary.children.length === 0 && approvedBooks.length === 0) {
+                bookListLibrary.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: var(--text-light); width: 100%;">
+                        <i class="fas fa-book-open" style="font-size: 3rem; margin-bottom: 15px; color: var(--text-light);"></i>
+                        <h3 style="margin-bottom: 10px; color: var(--secondary); font-size: 1.3rem;">Library is Empty</h3>
+                        <p style="font-size: 0.95rem; line-height: 1.5;">No books have been approved yet. Check back soon!</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // Create a book card element
+        function createBookCard(book, isPending = false) {
+            const bookCard = document.createElement('div');
+            bookCard.className = `book-card ${isPending ? 'pending' : 'approved'}`;
+            bookCard.setAttribute('data-id', book.id);
+            
+            let statusBadge = '';
+            if (isPending) {
+                const timeRemaining = getTimeRemaining(book.submissionTime);
+                statusBadge = `<div class="book-status status-pending">Pending (${timeRemaining})</div>`;
+            } else {
+                statusBadge = `<div class="book-status status-approved">Approved</div>`;
+            }
+            
+            let shareButton = '';
+            if (!isPending) {
+                shareButton = `<button class="share-btn" onclick="shareBook(${book.id}, event)" title="Share this book">
+                    <i class="fas fa-share-alt"></i>
+                </button>`;
+            }
+            
+            let adminControls = '';
+            if (isAdminLoggedIn) {
+                adminControls = `
+                    <div class="admin-controls">
+                        ${isPending ? `<button class="admin-control-btn approve" onclick="adminApproveBook(${book.id})" title="Approve Book Immediately">
+                            <i class="fas fa-check"></i>
+                        </button>` : ''}
+                        <button class="admin-control-btn delete" onclick="adminDeleteBook(${book.id})" title="Delete Book">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            }
+            
+            bookCard.onclick = function(event) {
+                if (!event.target.closest('.share-btn') && !event.target.closest('.admin-controls')) {
+                    window.open(book.driveLink, '_blank');
+                }
+            };
+            
+            bookCard.innerHTML = `
+                <div class="book-cover">
+                    ${book.coverImage ? 
+                        `<img src="${book.coverImage}" alt="${book.title} Cover" onerror="this.style.display='none';">` : 
+                        `<i class="fas fa-book"></i>`
+                    }
+                </div>
+                <div class="book-title">${book.title}</div>
+                <div class="book-author">by ${book.author}</div>
+                <div class="book-genre">${book.genre}</div>
+                ${statusBadge}
+                ${shareButton}
+                ${adminControls}
+            `;
+            
+            return bookCard;
         }
         
         // Page Navigation
@@ -1859,7 +1985,7 @@
             
             if (sectionId === 'home') {
                 document.querySelector('.main-content').style.display = 'flex';
-                renderBooks();
+                renderAllBooks();
                 updateNextCheckTimer();
                 if (isAdminLoggedIn) {
                     renderAdminLists();
@@ -1868,8 +1994,8 @@
                 document.querySelector('.main-content').style.display = 'none';
             }
             
-            if (sectionId === 'library' || sectionId === 'home') {
-                renderBooks();
+            if (sectionId === 'library') {
+                renderAllBooks(); // Re-render to ensure library section is updated
             }
             
             window.scrollTo({top: 0, behavior: 'smooth'});
@@ -1944,9 +2070,9 @@
             document.getElementById('submitterEmail').value = '';
             document.getElementById('bookCoverLink').value = '';
             
-            // Re-render books
-            renderBooks();
-            updateNextCheckTimer(); // Update timer with new book
+            // Re-render all books
+            renderAllBooks();
+            updateNextCheckTimer();
             
             if (isAdminLoggedIn) {
                 renderAdminLists();
@@ -1972,121 +2098,6 @@
         // Modal Functions
         function closeModal() {
             document.getElementById('confirmationModal').style.display = 'none';
-        }
-        
-        // Render books in the library
-        function renderBooks() {
-            const approvedBookList = document.getElementById('approvedBookList');
-            const pendingBookList = document.getElementById('pendingBookList');
-            const bookListLibrary = document.getElementById('bookListLibrary');
-            
-            approvedBookList.innerHTML = '';
-            pendingBookList.innerHTML = '';
-            if (bookListLibrary) {
-                bookListLibrary.innerHTML = '';
-            }
-            
-            const approvedBooks = books.filter(book => book.approved);
-            const pendingBooks = books.filter(book => !book.approved);
-            
-            // Sort books
-            sortBooks('approved');
-            
-            // Add approved books
-            if (approvedBooks.length === 0) {
-                approvedBookList.innerHTML = `
-                    <div style="text-align: center; padding: 40px 20px; color: var(--text-light); width: 100%;">
-                        <i class="fas fa-book-open" style="font-size: 3rem; margin-bottom: 15px; color: var(--text-light);"></i>
-                        <h3 style="margin-bottom: 10px; color: var(--secondary); font-size: 1.3rem;">No Approved Books Yet</h3>
-                        <p style="font-size: 0.95rem; line-height: 1.5;">Be the first to submit a book to our library!</p>
-                    </div>
-                `;
-            } else {
-                approvedBooks.forEach(book => {
-                    const bookCard = createBookCard(book, false);
-                    approvedBookList.appendChild(bookCard);
-                    
-                    if (bookListLibrary) {
-                        const libraryCard = createBookCard(book, false);
-                        bookListLibrary.appendChild(libraryCard);
-                    }
-                });
-            }
-            
-            // Add pending books
-            if (pendingBooks.length === 0) {
-                pendingBookList.innerHTML = `
-                    <div style="text-align: center; padding: 40px 20px; color: var(--text-light); width: 100%;">
-                        <i class="fas fa-clock" style="font-size: 3rem; margin-bottom: 15px; color: var(--text-light);"></i>
-                        <h3 style="margin-bottom: 10px; color: var(--secondary); font-size: 1.3rem;">No Pending Books</h3>
-                        <p style="font-size: 0.95rem; line-height: 1.5;">All books have been approved!</p>
-                    </div>
-                `;
-            } else {
-                pendingBooks.forEach(book => {
-                    const bookCard = createBookCard(book, true);
-                    pendingBookList.appendChild(bookCard);
-                });
-            }
-        }
-        
-        // Create a book card element
-        function createBookCard(book, isPending = false) {
-            const bookCard = document.createElement('div');
-            bookCard.className = `book-card ${isPending ? 'pending' : 'approved'}`;
-            bookCard.setAttribute('data-id', book.id);
-            
-            let statusBadge = '';
-            if (isPending) {
-                const timeRemaining = getTimeRemaining(book.submissionTime);
-                statusBadge = `<div class="book-status status-pending">Pending (${timeRemaining})</div>`;
-            } else {
-                statusBadge = `<div class="book-status status-approved">Approved</div>`;
-            }
-            
-            let shareButton = '';
-            if (!isPending) {
-                shareButton = `<button class="share-btn" onclick="shareBook(${book.id}, event)" title="Share this book">
-                    <i class="fas fa-share-alt"></i>
-                </button>`;
-            }
-            
-            let adminControls = '';
-            if (isAdminLoggedIn) {
-                adminControls = `
-                    <div class="admin-controls">
-                        ${isPending ? `<button class="admin-control-btn approve" onclick="adminApproveBook(${book.id})" title="Approve Book Immediately">
-                            <i class="fas fa-check"></i>
-                        </button>` : ''}
-                        <button class="admin-control-btn delete" onclick="adminDeleteBook(${book.id})" title="Delete Book">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                `;
-            }
-            
-            bookCard.onclick = function(event) {
-                if (!event.target.closest('.share-btn') && !event.target.closest('.admin-controls')) {
-                    window.open(book.driveLink, '_blank');
-                }
-            };
-            
-            bookCard.innerHTML = `
-                <div class="book-cover">
-                    ${book.coverImage ? 
-                        `<img src="${book.coverImage}" alt="${book.title} Cover" onerror="this.style.display='none';">` : 
-                        `<i class="fas fa-book"></i>`
-                    }
-                </div>
-                <div class="book-title">${book.title}</div>
-                <div class="book-author">by ${book.author}</div>
-                <div class="book-genre">${book.genre}</div>
-                ${statusBadge}
-                ${shareButton}
-                ${adminControls}
-            `;
-            
-            return bookCard;
         }
         
         // Share book
@@ -2135,7 +2146,7 @@
                 }
             });
             
-            renderBooks();
+            renderAllBooks();
         }
         
         // Show notification
