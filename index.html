@@ -11,11 +11,13 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        color 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                        border-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         :root {
-            /* Light Mode Colors */
+            /* Light Mode Colors - Sunrise Theme */
             --primary: #6d5d6e;
             --secondary: #4f4557;
             --accent: #f4eee0;
@@ -40,9 +42,14 @@
             /* Shadow */
             --shadow-color: rgba(0, 0, 0, 0.1);
             --shadow-hover: rgba(0, 0, 0, 0.15);
+            
+            /* Theme Colors */
+            --theme-bg: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            --theme-icon-color: #ff9800;
+            --theme-icon-glow: rgba(255, 152, 0, 0.3);
         }
         
-        /* Dark Mode Colors */
+        /* Dark Mode Colors - Sunset Theme */
         [data-theme="dark"] {
             --primary: #9f8aa4;
             --secondary: #6d5d6e;
@@ -57,9 +64,9 @@
             --text-light: #b0a9a1;
             
             /* Background Colors */
-            --bg-primary: #1a1a2e;
-            --bg-secondary: #16213e;
-            --bg-card: #0f3460;
+            --bg-primary: #0c0c14;
+            --bg-secondary: #1a1a2e;
+            --bg-card: #16213e;
             --bg-input: #1e2a4a;
             
             /* Border Colors */
@@ -68,13 +75,161 @@
             /* Shadow */
             --shadow-color: rgba(0, 0, 0, 0.3);
             --shadow-hover: rgba(0, 0, 0, 0.4);
+            
+            /* Theme Colors */
+            --theme-bg: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            --theme-icon-color: #ffd166;
+            --theme-icon-glow: rgba(255, 209, 102, 0.3);
         }
         
         body {
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            background: var(--theme-bg);
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
+            transition: background 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background overlay for theme transition */
+        .theme-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            background: linear-gradient(135deg, 
+                rgba(255, 236, 210, 0.8) 0%, 
+                rgba(252, 182, 159, 0.8) 50%, 
+                rgba(15, 12, 41, 0.8) 100%);
+        }
+        
+        .theme-overlay.active {
+            opacity: 1;
+            animation: themeTransition 1.2s ease forwards;
+        }
+        
+        @keyframes themeTransition {
+            0% {
+                opacity: 0.8;
+                backdrop-filter: blur(0px);
+            }
+            50% {
+                opacity: 1;
+                backdrop-filter: blur(10px);
+            }
+            100% {
+                opacity: 0;
+                backdrop-filter: blur(0px);
+            }
+        }
+        
+        /* Sunrise/Sunset Animation Elements */
+        .sun-moon-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        
+        .sun-moon {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--theme-icon-color);
+            box-shadow: 0 0 30px var(--theme-icon-glow),
+                        0 0 60px rgba(255, 209, 102, 0.2);
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            transform: scale(0.5);
+        }
+        
+        .sun-moon.rising {
+            animation: sunrise 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        .sun-moon.setting {
+            animation: sunset 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        
+        @keyframes sunrise {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.5);
+                box-shadow: 0 0 0px rgba(255, 152, 0, 0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-10px) scale(1.1);
+                box-shadow: 0 0 40px rgba(255, 152, 0, 0.4),
+                            0 0 80px rgba(255, 152, 0, 0.2);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-60px) scale(0.8);
+                box-shadow: 0 0 0px rgba(255, 152, 0, 0);
+            }
+        }
+        
+        @keyframes sunset {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.5);
+                box-shadow: 0 0 0px rgba(255, 209, 102, 0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(10px) scale(1.1);
+                box-shadow: 0 0 40px rgba(255, 209, 102, 0.4),
+                            0 0 80px rgba(255, 209, 102, 0.2);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(60px) scale(0.8);
+                box-shadow: 0 0 0px rgba(255, 209, 102, 0);
+            }
+        }
+        
+        /* Sun Rays/Moon Glow */
+        .sun-moon::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                rgba(255, 255, 255, 0.3) 0%, 
+                rgba(255, 255, 255, 0) 70%);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        [data-theme="dark"] .sun-moon::before {
+            background: radial-gradient(circle, 
+                rgba(255, 255, 255, 0.2) 0%, 
+                rgba(255, 255, 255, 0) 70%);
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.5;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
         }
         
         .container {
@@ -299,26 +454,53 @@
             width: 100%;
         }
         
-        /* Theme Toggle Button */
+        /* Theme Toggle Button - Enhanced with Animation */
         .theme-toggle {
             background: transparent;
             border: none;
-            color: var(--text-primary);
+            color: var(--theme-icon-color);
             cursor: pointer;
             font-size: 1.2rem;
             padding: 5px 10px;
             border-radius: 50%;
-            width: 36px;
-            height: 36px;
+            width: 50px;
+            height: 50px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1001;
         }
         
-        .theme-toggle:hover {
-            background: rgba(var(--primary-rgb), 0.1);
-            transform: rotate(15deg);
+        .theme-toggle::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--theme-bg);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .theme-toggle:hover::before {
+            opacity: 0.1;
+        }
+        
+        .theme-toggle i {
+            position: relative;
+            z-index: 2;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            text-shadow: 0 0 10px var(--theme-icon-glow);
+        }
+        
+        .theme-toggle:hover i {
+            transform: rotate(180deg) scale(1.2);
+            text-shadow: 0 0 20px var(--theme-icon-glow);
         }
         
         /* Admin Login/Logout Button */
@@ -1069,6 +1251,12 @@
         
         .admin-book-detail-content {
             display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .admin-book-main {
+            display: flex;
             gap: 25px;
             flex-wrap: wrap;
         }
@@ -1159,6 +1347,91 @@
         
         .admin-book-drive-link a:hover {
             text-decoration: underline;
+        }
+        
+        /* Admin Comments Section */
+        .admin-comments-section {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .admin-comments-section h4 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .admin-comments-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        
+        .admin-comment-item {
+            background: var(--bg-card);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+        
+        .admin-comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .admin-comment-author {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .admin-comment-date {
+            color: var(--text-light);
+            font-size: 0.8rem;
+        }
+        
+        .admin-comment-text {
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        
+        .admin-comment-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+        
+        .admin-comment-delete-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+        
+        .admin-comment-delete-btn:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+        }
+        
+        .no-admin-comments {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-light);
+            font-style: italic;
         }
         
         .admin-book-actions {
@@ -1558,7 +1831,7 @@
                 font-size: 0.8rem;
             }
             
-            .admin-book-detail-content,
+            .admin-book-main,
             .reader-book-main {
                 flex-direction: column;
             }
@@ -1595,6 +1868,16 @@
                 width: 100%;
                 justify-content: flex-end;
             }
+            
+            .sun-moon-container {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .sun-moon {
+                width: 40px;
+                height: 40px;
+            }
         }
 
         @media (min-width: 768px) {
@@ -1613,6 +1896,14 @@
     </style>
 </head>
 <body>
+    <!-- Sunrise/Sunset Animation Elements -->
+    <div class="sun-moon-container">
+        <div class="sun-moon" id="sunMoonElement"></div>
+    </div>
+    
+    <!-- Theme Transition Overlay -->
+    <div class="theme-overlay" id="themeOverlay"></div>
+
     <!-- Floating Mini Logo -->
     <div class="floating-logo-container">
         <img src="https://drive.google.com/thumbnail?id=1OFULHvS5bE9ZjFPrroDoG4kYcQzFy3bC&sz=w1000" 
@@ -1650,7 +1941,7 @@
                 <li><a href="#" onclick="showSection('contact')"><i class="fas fa-envelope"></i> Contact</a></li>
                 <li>
                     <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
-                        <i class="fas fa-moon" id="themeIcon"></i>
+                        <i class="fas fa-sun" id="themeIcon"></i>
                     </button>
                 </li>
                 <li>
@@ -1979,54 +2270,66 @@
             </div>
             
             <div class="admin-book-detail-content">
-                <div class="admin-book-cover">
-                    <img id="adminBookCover" src="" alt="Book Cover" onerror="this.style.display='none'; document.getElementById('adminCoverPlaceholder').style.display='flex';">
-                    <div id="adminCoverPlaceholder" class="cover-placeholder">
-                        <i class="fas fa-book"></i>
+                <div class="admin-book-main">
+                    <div class="admin-book-cover">
+                        <img id="adminBookCover" src="" alt="Book Cover" onerror="this.style.display='none'; document.getElementById('adminCoverPlaceholder').style.display='flex';">
+                        <div id="adminCoverPlaceholder" class="cover-placeholder">
+                            <i class="fas fa-book"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="admin-book-info">
+                        <h3 class="admin-book-title" id="adminBookTitle">Book Title</h3>
+                        <p class="admin-book-author" id="adminBookAuthor">by Author Name</p>
+                        
+                        <div class="admin-book-meta">
+                            <div class="admin-book-meta-item">
+                                <strong>Genre:</strong> <span id="adminBookGenre">Not specified</span>
+                            </div>
+                            <div class="admin-book-meta-item">
+                                <strong>Status:</strong> <span id="adminBookStatus">Pending</span>
+                            </div>
+                            <div class="admin-book-meta-item">
+                                <strong>Upload Date:</strong> <span id="adminBookUploadDate">Not specified</span>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-book-meta-item" style="width: 100%;">
+                            <strong>Submitter Email:</strong> <span id="adminBookSubmitterEmail">Not provided</span>
+                        </div>
+                        
+                        <div class="admin-book-description">
+                            <h4><i class="fas fa-align-left"></i> Description</h4>
+                            <p id="adminBookDescription">No description provided.</p>
+                        </div>
+                        
+                        <div class="admin-book-drive-link">
+                            <h4><i class="fab fa-google-drive"></i> Google Drive Link</h4>
+                            <a id="adminBookDriveLink" href="#" target="_blank">Click to view book</a>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="admin-book-info">
-                    <h3 class="admin-book-title" id="adminBookTitle">Book Title</h3>
-                    <p class="admin-book-author" id="adminBookAuthor">by Author Name</p>
+                <!-- Admin Comments Section -->
+                <div class="admin-comments-section" id="adminCommentsSection">
+                    <h4><i class="fas fa-comments"></i> Reader Comments - Admin Control</h4>
+                    <p>Manage comments for this book. You can delete inappropriate comments.</p>
                     
-                    <div class="admin-book-meta">
-                        <div class="admin-book-meta-item">
-                            <strong>Genre:</strong> <span id="adminBookGenre">Not specified</span>
-                        </div>
-                        <div class="admin-book-meta-item">
-                            <strong>Status:</strong> <span id="adminBookStatus">Pending</span>
-                        </div>
-                        <div class="admin-book-meta-item">
-                            <strong>Upload Date:</strong> <span id="adminBookUploadDate">Not specified</span>
-                        </div>
+                    <div class="admin-comments-list" id="adminCommentsList">
+                        <!-- Admin comments will be listed here -->
                     </div>
-                    
-                    <div class="admin-book-meta-item" style="width: 100%;">
-                        <strong>Submitter Email:</strong> <span id="adminBookSubmitterEmail">Not provided</span>
-                    </div>
-                    
-                    <div class="admin-book-description">
-                        <h4><i class="fas fa-align-left"></i> Description</h4>
-                        <p id="adminBookDescription">No description provided.</p>
-                    </div>
-                    
-                    <div class="admin-book-drive-link">
-                        <h4><i class="fab fa-google-drive"></i> Google Drive Link</h4>
-                        <a id="adminBookDriveLink" href="#" target="_blank">Click to view book</a>
-                    </div>
-                    
-                    <div class="admin-book-actions">
-                        <button class="admin-book-action-btn approve" onclick="adminApproveBookFromDetail()">
-                            <i class="fas fa-check"></i> Approve Book
-                        </button>
-                        <button class="admin-book-action-btn delete" onclick="adminDeleteBookFromDetail()">
-                            <i class="fas fa-trash"></i> Delete Book
-                        </button>
-                        <button class="admin-book-action-btn read" onclick="adminOpenBookFromDetail()">
-                            <i class="fas fa-external-link-alt"></i> Read Book
-                        </button>
-                    </div>
+                </div>
+                
+                <div class="admin-book-actions">
+                    <button class="admin-book-action-btn approve" onclick="adminApproveBookFromDetail()">
+                        <i class="fas fa-check"></i> Approve Book
+                    </button>
+                    <button class="admin-book-action-btn delete" onclick="adminDeleteBookFromDetail()">
+                        <i class="fas fa-trash"></i> Delete Book
+                    </button>
+                    <button class="admin-book-action-btn read" onclick="adminOpenBookFromDetail()">
+                        <i class="fas fa-external-link-alt"></i> Read Book
+                    </button>
                 </div>
             </div>
         </div>
@@ -2169,6 +2472,9 @@
         let currentAdminBookForDetail = null;
         let currentReaderBookForDetail = null;
         let currentSelectedRating = 0;
+        
+        // Theme animation state
+        let isThemeTransitioning = false;
 
         // Initialize books from localStorage or use sample data
         function initializeBooks() {
@@ -2248,94 +2554,12 @@
             }
         }
         
-        // Check and auto-approve books older than 48 hours
-        function checkAutoApproval() {
-            const now = Date.now();
-            let approvedCount = 0;
-            
-            books.forEach(book => {
-                if (!book.approved && book.submissionTime) {
-                    const timeSinceSubmission = now - book.submissionTime;
-                    
-                    if (timeSinceSubmission >= APPROVAL_DELAY) {
-                        book.approved = true;
-                        book.approvalTime = now;
-                        approvedCount++;
-                    }
-                }
-            });
-            
-            if (approvedCount > 0) {
-                saveBooks();
-                renderAllBooks();
-                updateNextCheckTimer();
-                if (isAdminLoggedIn) {
-                    renderAdminLists();
-                }
-                
-                if (approvedCount > 0) {
-                    showNotification(`${approvedCount} book(s) auto-approved!`, 'success');
-                }
-            }
-            
-            updateNextCheckTimer();
-        }
-        
-        // Update next check timer display
-        function updateNextCheckTimer() {
-            const now = Date.now();
-            let nextCheck = null;
-            let earliestBook = null;
-            
-            // Filter only existing pending books
-            const pendingBooks = books.filter(book => !book.approved && book.submissionTime);
-            
-            pendingBooks.forEach(book => {
-                const approvalTime = book.submissionTime + APPROVAL_DELAY;
-                if (!nextCheck || approvalTime < nextCheck) {
-                    nextCheck = approvalTime;
-                    earliestBook = book;
-                }
-            });
-            
-            const timerElement = document.getElementById('nextCheckTimer');
-            if (!timerElement) return;
-            
-            if (nextCheck && earliestBook) {
-                const timeRemaining = nextCheck - now;
-                if (timeRemaining > 0) {
-                    const hours = Math.floor(timeRemaining / (60 * 60 * 1000));
-                    const minutes = Math.floor((timeRemaining % (60 * 60 * 1000)) / (60 * 1000));
-                    
-                    timerElement.innerHTML = `<strong>Next auto-approval:</strong> ${hours}h ${minutes}m<br>
-                                             <small>For: "${earliestBook.title}"</small>`;
-                } else {
-                    timerElement.textContent = "Checking for approvals now...";
-                    setTimeout(checkAutoApproval, 1000);
-                }
-            } else {
-                timerElement.textContent = "No pending books waiting for approval";
-            }
-        }
-        
-        // Calculate time remaining for a pending book
-        function getTimeRemaining(submissionTime) {
-            const now = Date.now();
-            const timeSinceSubmission = now - submissionTime;
-            const timeRemaining = APPROVAL_DELAY - timeSinceSubmission;
-            
-            if (timeRemaining <= 0) return "Ready for approval";
-            
-            const hours = Math.floor(timeRemaining / (60 * 60 * 1000));
-            const minutes = Math.floor((timeRemaining % (60 * 60 * 1000)) / (60 * 1000));
-            
-            return `${hours}h ${minutes}m`;
-        }
-        
-        // Theme Management
+        // Enhanced Theme Management with Sunrise/Sunset Animation
         function initializeTheme() {
             const themeToggle = document.getElementById('themeToggle');
             const themeIcon = document.getElementById('themeIcon');
+            const sunMoonElement = document.getElementById('sunMoonElement');
+            const themeOverlay = document.getElementById('themeOverlay');
             const savedTheme = localStorage.getItem('theme');
             
             if (savedTheme) {
@@ -2347,23 +2571,60 @@
             }
             
             themeToggle.addEventListener('click', () => {
+                if (isThemeTransitioning) return;
+                
                 const currentTheme = document.documentElement.getAttribute('data-theme');
                 const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
                 
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                updateThemeIcon(newTheme);
+                // Start theme transition animation
+                startThemeTransition(currentTheme, newTheme);
+                
+                // After animation completes, switch theme
+                setTimeout(() => {
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    updateThemeIcon(newTheme);
+                    isThemeTransitioning = false;
+                }, 600);
             });
+        }
+        
+        function startThemeTransition(currentTheme, newTheme) {
+            isThemeTransitioning = true;
+            const sunMoonElement = document.getElementById('sunMoonElement');
+            const themeOverlay = document.getElementById('themeOverlay');
+            
+            // Show overlay
+            themeOverlay.classList.add('active');
+            
+            // Animate sun/moon based on transition direction
+            if (newTheme === 'dark') {
+                // Sunrise to Sunset (light to dark)
+                sunMoonElement.classList.remove('rising');
+                sunMoonElement.classList.add('setting');
+            } else {
+                // Sunset to Sunrise (dark to light)
+                sunMoonElement.classList.remove('setting');
+                sunMoonElement.classList.add('rising');
+            }
+            
+            // Reset animation after completion
+            setTimeout(() => {
+                sunMoonElement.classList.remove('rising', 'setting');
+                themeOverlay.classList.remove('active');
+            }, 1200);
         }
         
         function updateThemeIcon(theme) {
             const themeIcon = document.getElementById('themeIcon');
             if (theme === 'dark') {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
+                themeIcon.className = 'fas fa-moon';
+                themeIcon.style.color = '#ffd166';
+                themeIcon.style.textShadow = '0 0 10px rgba(255, 209, 102, 0.5)';
             } else {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
+                themeIcon.className = 'fas fa-sun';
+                themeIcon.style.color = '#ff9800';
+                themeIcon.style.textShadow = '0 0 10px rgba(255, 152, 0, 0.5)';
             }
         }
         
@@ -2549,7 +2810,7 @@
             allBooksList.innerHTML = html;
         }
         
-        // Show Admin Book Detail Modal
+        // Show Admin Book Detail Modal with Comments Section
         function showAdminBookDetail(bookId) {
             const book = books.find(book => book.id === bookId);
             if (!book) return;
@@ -2579,8 +2840,75 @@
                 coverPlaceholder.style.display = 'flex';
             }
             
+            // Load and render admin comments
+            renderAdminComments(book);
+            
             // Show modal
             document.getElementById('adminBookDetailModal').style.display = 'flex';
+        }
+        
+        // Render comments in admin modal with delete buttons
+        function renderAdminComments(book) {
+            const commentsList = document.getElementById('adminCommentsList');
+            
+            if (!book.comments || book.comments.length === 0) {
+                commentsList.innerHTML = `
+                    <div class="no-admin-comments">
+                        <i class="fas fa-comment-slash" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <p>No comments yet for this book.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort comments by date (newest first)
+            const sortedComments = [...book.comments].sort((a, b) => {
+                return new Date(b.date) - new Date(a.date);
+            });
+            
+            let commentsHtml = '';
+            sortedComments.forEach((comment, index) => {
+                commentsHtml += `
+                    <div class="admin-comment-item">
+                        <div class="admin-comment-header">
+                            <div class="admin-comment-author">${comment.name}</div>
+                            <div class="admin-comment-date">${comment.date}</div>
+                        </div>
+                        <div class="admin-comment-text">${comment.comment}</div>
+                        <div class="admin-comment-actions">
+                            <button class="admin-comment-delete-btn" onclick="deleteAdminComment(${book.id}, ${index})">
+                                <i class="fas fa-trash"></i> Delete Comment
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            commentsList.innerHTML = commentsHtml;
+        }
+        
+        // Delete comment from admin modal
+        function deleteAdminComment(bookId, commentIndex) {
+            if (!isAdminLoggedIn) {
+                alert('Admin login required to delete comments.');
+                return;
+            }
+            
+            if (confirm('Are you sure you want to delete this comment? This action cannot be undone.')) {
+                const book = books.find(book => book.id === bookId);
+                if (book && book.comments && book.comments[commentIndex]) {
+                    // Remove the comment
+                    book.comments.splice(commentIndex, 1);
+                    saveBooks();
+                    
+                    // Re-render admin comments
+                    if (currentAdminBookForDetail && currentAdminBookForDetail.id === bookId) {
+                        renderAdminComments(currentAdminBookForDetail);
+                    }
+                    
+                    showNotification('Comment deleted successfully!', 'success');
+                }
+            }
         }
         
         // Close Admin Book Detail Modal
@@ -2950,6 +3278,90 @@
             if (currentReaderBookForDetail) {
                 shareBook(currentReaderBookForDetail.id);
             }
+        }
+        
+        // Check and auto-approve books older than 48 hours
+        function checkAutoApproval() {
+            const now = Date.now();
+            let approvedCount = 0;
+            
+            books.forEach(book => {
+                if (!book.approved && book.submissionTime) {
+                    const timeSinceSubmission = now - book.submissionTime;
+                    
+                    if (timeSinceSubmission >= APPROVAL_DELAY) {
+                        book.approved = true;
+                        book.approvalTime = now;
+                        approvedCount++;
+                    }
+                }
+            });
+            
+            if (approvedCount > 0) {
+                saveBooks();
+                renderAllBooks();
+                updateNextCheckTimer();
+                if (isAdminLoggedIn) {
+                    renderAdminLists();
+                }
+                
+                if (approvedCount > 0) {
+                    showNotification(`${approvedCount} book(s) auto-approved!`, 'success');
+                }
+            }
+            
+            updateNextCheckTimer();
+        }
+        
+        // Update next check timer display
+        function updateNextCheckTimer() {
+            const now = Date.now();
+            let nextCheck = null;
+            let earliestBook = null;
+            
+            // Filter only existing pending books
+            const pendingBooks = books.filter(book => !book.approved && book.submissionTime);
+            
+            pendingBooks.forEach(book => {
+                const approvalTime = book.submissionTime + APPROVAL_DELAY;
+                if (!nextCheck || approvalTime < nextCheck) {
+                    nextCheck = approvalTime;
+                    earliestBook = book;
+                }
+            });
+            
+            const timerElement = document.getElementById('nextCheckTimer');
+            if (!timerElement) return;
+            
+            if (nextCheck && earliestBook) {
+                const timeRemaining = nextCheck - now;
+                if (timeRemaining > 0) {
+                    const hours = Math.floor(timeRemaining / (60 * 60 * 1000));
+                    const minutes = Math.floor((timeRemaining % (60 * 60 * 1000)) / (60 * 1000));
+                    
+                    timerElement.innerHTML = `<strong>Next auto-approval:</strong> ${hours}h ${minutes}m<br>
+                                             <small>For: "${earliestBook.title}"</small>`;
+                } else {
+                    timerElement.textContent = "Checking for approvals now...";
+                    setTimeout(checkAutoApproval, 1000);
+                }
+            } else {
+                timerElement.textContent = "No pending books waiting for approval";
+            }
+        }
+        
+        // Calculate time remaining for a pending book
+        function getTimeRemaining(submissionTime) {
+            const now = Date.now();
+            const timeSinceSubmission = now - submissionTime;
+            const timeRemaining = APPROVAL_DELAY - timeSinceSubmission;
+            
+            if (timeRemaining <= 0) return "Ready for approval";
+            
+            const hours = Math.floor(timeRemaining / (60 * 60 * 1000));
+            const minutes = Math.floor((timeRemaining % (60 * 60 * 1000)) / (60 * 1000));
+            
+            return `${hours}h ${minutes}m`;
         }
         
         // Unified function to render ALL book displays
