@@ -745,6 +745,11 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
+        }
+        
+        .book-cover img.hidden {
+            display: none;
         }
         
         .book-title {
@@ -1595,7 +1600,7 @@
             text-decoration: underline;
         }
         
-        /* Rating System */
+        /* Rating System - Improved Responsiveness */
         .rating-section {
             background: var(--light);
             padding: 20px;
@@ -1608,6 +1613,8 @@
             display: flex;
             align-items: center;
             margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .average-rating {
@@ -1615,16 +1622,19 @@
             font-weight: bold;
             color: var(--primary);
             margin-right: 15px;
+            min-width: 60px;
         }
         
         .stars {
             display: flex;
             gap: 5px;
+            flex-wrap: nowrap;
         }
         
         .star {
             color: #ffc107;
             font-size: 1.5rem;
+            flex-shrink: 0;
         }
         
         .star.empty {
@@ -1635,6 +1645,7 @@
             margin-left: 15px;
             color: var(--text-secondary);
             font-size: 0.9rem;
+            white-space: nowrap;
         }
         
         .rating-form {
@@ -1653,19 +1664,21 @@
             display: flex;
             gap: 5px;
             margin: 10px 0;
+            flex-wrap: nowrap;
         }
         
         .star-rating-input .star {
             cursor: pointer;
             font-size: 1.8rem;
             transition: transform 0.2s;
+            flex-shrink: 0;
         }
         
         .star-rating-input .star:hover {
             transform: scale(1.2);
         }
         
-        /* Comments Section */
+        /* Comments Section - Improved Responsiveness */
         .comments-section {
             background: var(--light);
             padding: 20px;
@@ -1693,6 +1706,8 @@
             justify-content: space-between;
             margin-bottom: 8px;
             font-size: 0.9rem;
+            flex-wrap: wrap;
+            gap: 5px;
         }
         
         .comment-author {
@@ -1708,6 +1723,8 @@
         .comment-text {
             color: var(--text-primary);
             line-height: 1.5;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
         
         .no-comments {
@@ -1754,11 +1771,13 @@
             background: var(--primary);
             color: white;
             flex: 1;
+            min-width: 120px;
         }
         
         .reader-book-action-btn.share {
             background: var(--highlight);
             color: white;
+            min-width: 100px;
         }
         
         .reader-book-action-btn:hover {
@@ -1788,7 +1807,7 @@
         }
 
         /* Mobile Responsive */
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
             header {
                 padding: 40px 0 20px;
             }
@@ -1878,9 +1897,85 @@
                 width: 40px;
                 height: 40px;
             }
+            
+            /* Mobile-specific fixes for comments and ratings */
+            .rating-display {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .average-rating {
+                font-size: 1.8rem;
+                margin-right: 0;
+            }
+            
+            .stars {
+                gap: 3px;
+            }
+            
+            .star {
+                font-size: 1.3rem;
+            }
+            
+            .star-rating-input .star {
+                font-size: 1.5rem;
+            }
+            
+            .total-ratings {
+                margin-left: 0;
+                font-size: 0.85rem;
+            }
+            
+            .comment-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            
+            .comment-date {
+                align-self: flex-start;
+            }
+            
+            .reader-book-actions {
+                flex-direction: column;
+            }
+            
+            .reader-book-action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .modal-content {
+                padding: 15px;
+            }
+            
+            .reader-book-detail-content,
+            .admin-book-detail-content {
+                gap: 15px;
+            }
         }
 
-        @media (min-width: 768px) {
+        @media (max-width: 480px) {
+            .book-list {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            .book-cover {
+                height: 90px;
+            }
+            
+            .average-rating {
+                font-size: 1.6rem;
+            }
+            
+            .star {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Desktop-specific fixes */
+        @media (min-width: 769px) {
             .main-content {
                 flex-direction: row;
             }
@@ -1891,6 +1986,14 @@
             
             .book-list {
                 grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+            
+            /* Ensure book cover images show on desktop */
+            .book-cover img {
+                display: block !important;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
         }
     </style>
@@ -2272,7 +2375,7 @@
             <div class="admin-book-detail-content">
                 <div class="admin-book-main">
                     <div class="admin-book-cover">
-                        <img id="adminBookCover" src="" alt="Book Cover" onerror="this.style.display='none'; document.getElementById('adminCoverPlaceholder').style.display='flex';">
+                        <img id="adminBookCover" src="" alt="Book Cover" onerror="this.onerror=null; this.style.display='none'; document.getElementById('adminCoverPlaceholder').style.display='flex';">
                         <div id="adminCoverPlaceholder" class="cover-placeholder">
                             <i class="fas fa-book"></i>
                         </div>
@@ -2348,7 +2451,7 @@
             <div class="reader-book-detail-content">
                 <div class="reader-book-main">
                     <div class="reader-book-cover">
-                        <img id="readerBookCover" src="" alt="Book Cover" onerror="this.style.display='none'; document.getElementById('readerCoverPlaceholder').style.display='flex';">
+                        <img id="readerBookCover" src="" alt="Book Cover" onerror="this.onerror=null; this.style.display='none'; document.getElementById('readerCoverPlaceholder').style.display='flex';">
                         <div id="readerCoverPlaceholder" class="cover-placeholder">
                             <i class="fas fa-book"></i>
                         </div>
@@ -2499,7 +2602,7 @@
             updateNextCheckTimer();
         }
         
-        // Get sample books with comments and ratings structure
+        // Get sample books with comments and ratings structure - FIXED BOOK COVER URL
         function getSampleBooks() {
             return [
                 {
@@ -2509,7 +2612,8 @@
                     genre: "Crime",
                     description: "It all starts here in Chapter 1: The Beginning of Darkness. Three friends in Tirupati thought they buried a secret on a lonely night. But someone was watching. Someone who believes that true love never dies—it just waits for revenge.",
                     driveLink: "https://drive.google.com/file/d/1TRsv0crqfNbTWHvF3dpMfnnOJ8H9Gbac/view?usp=drive_link",
-                    coverImage: "https://drive.google.com/thumbnail?id=1hg1Jt6OgSSaQerLcWaT4WUsXC2EKeY58&sz=w1000",
+                    // FIXED: Using a publicly accessible image URL
+                    coverImage: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
                     uploadDate: "2023-11-30",
                     submissionTime: new Date("2023-11-30").getTime(),
                     approved: true,
@@ -2562,12 +2666,16 @@
             const themeOverlay = document.getElementById('themeOverlay');
             const savedTheme = localStorage.getItem('theme');
             
+            // Set initial theme
             if (savedTheme) {
                 document.documentElement.setAttribute('data-theme', savedTheme);
                 updateThemeIcon(savedTheme);
             } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 document.documentElement.setAttribute('data-theme', 'dark');
                 updateThemeIcon('dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                updateThemeIcon('light');
             }
             
             themeToggle.addEventListener('click', () => {
@@ -2730,7 +2838,10 @@
             document.querySelectorAll('.admin-tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            event.target.classList.add('active');
+            
+            // Get the button that was clicked
+            const clickedBtn = event.target;
+            clickedBtn.classList.add('active');
             
             document.querySelectorAll('.admin-tab-content').forEach(content => {
                 content.classList.remove('active');
@@ -2828,13 +2939,27 @@
             document.getElementById('adminBookDriveLink').href = book.driveLink;
             document.getElementById('adminBookDriveLink').textContent = book.driveLink;
             
-            // Set book cover
+            // Set book cover - FIXED: Proper image handling
             const coverImg = document.getElementById('adminBookCover');
             const coverPlaceholder = document.getElementById('adminCoverPlaceholder');
-            if (book.coverImage) {
+            
+            if (book.coverImage && book.coverImage.trim() !== '') {
                 coverImg.src = book.coverImage;
                 coverImg.style.display = 'block';
                 coverPlaceholder.style.display = 'none';
+                
+                // Force image reload
+                coverImg.onload = function() {
+                    console.log('Admin book cover loaded successfully');
+                };
+                coverImg.onerror = function() {
+                    console.log('Admin book cover failed to load');
+                    this.style.display = 'none';
+                    coverPlaceholder.style.display = 'flex';
+                };
+                
+                // Trigger image load
+                coverImg.src = book.coverImage + (book.coverImage.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
             } else {
                 coverImg.style.display = 'none';
                 coverPlaceholder.style.display = 'flex';
@@ -3011,13 +3136,27 @@
             document.getElementById('readerBookDriveLink').href = book.driveLink;
             document.getElementById('readerBookDriveLink').textContent = "Click here to read on Google Drive";
             
-            // Set book cover
+            // Set book cover - FIXED: Proper image handling
             const coverImg = document.getElementById('readerBookCover');
             const coverPlaceholder = document.getElementById('readerCoverPlaceholder');
-            if (book.coverImage) {
+            
+            if (book.coverImage && book.coverImage.trim() !== '') {
                 coverImg.src = book.coverImage;
                 coverImg.style.display = 'block';
                 coverPlaceholder.style.display = 'none';
+                
+                // Force image reload
+                coverImg.onload = function() {
+                    console.log('Reader book cover loaded successfully');
+                };
+                coverImg.onerror = function() {
+                    console.log('Reader book cover failed to load');
+                    this.style.display = 'none';
+                    coverPlaceholder.style.display = 'flex';
+                };
+                
+                // Trigger image load
+                coverImg.src = book.coverImage + (book.coverImage.includes('?') ? '&' : '?') + 't=' + new Date().getTime();
             } else {
                 coverImg.style.display = 'none';
                 coverPlaceholder.style.display = 'flex';
@@ -3437,7 +3576,7 @@
             }
         }
         
-        // Create a book card element
+        // Create a book card element - FIXED: Proper image handling
         function createBookCard(book, isPending = false) {
             const bookCard = document.createElement('div');
             bookCard.className = `book-card ${isPending ? 'pending' : 'approved'}`;
@@ -3498,13 +3637,32 @@
                 }
             };
             
+            // Create book cover HTML - FIXED: Proper image handling
+            let bookCoverHTML = '';
+            if (book.coverImage && book.coverImage.trim() !== '') {
+                // Create a timestamp to prevent caching issues
+                const timestamp = new Date().getTime();
+                const imageUrl = book.coverImage + (book.coverImage.includes('?') ? '&' : '?') + 't=' + timestamp;
+                
+                bookCoverHTML = `
+                    <div class="book-cover">
+                        <img src="${imageUrl}" alt="${book.title} Cover" 
+                             onload="this.classList.remove('hidden')"
+                             onerror="this.classList.add('hidden'); this.nextElementSibling.style.display='flex'"
+                             class="hidden">
+                        <i class="fas fa-book" style="display: none; font-size: 2rem; color: white;"></i>
+                    </div>
+                `;
+            } else {
+                bookCoverHTML = `
+                    <div class="book-cover">
+                        <i class="fas fa-book"></i>
+                    </div>
+                `;
+            }
+            
             bookCard.innerHTML = `
-                <div class="book-cover">
-                    ${book.coverImage ? 
-                        `<img src="${book.coverImage}" alt="${book.title} Cover" onerror="this.style.display='none';">` : 
-                        `<i class="fas fa-book"></i>`
-                    }
-                </div>
+                ${bookCoverHTML}
                 <div class="book-title">${book.title}</div>
                 <div class="book-author">by ${book.author}</div>
                 <div class="book-genre">${book.genre}</div>
