@@ -2340,47 +2340,67 @@
         function initializeBooks() {
             const savedBooks = localStorage.getItem('tejKumarBooks');
             if (savedBooks) {
-                books = JSON.parse(savedBooks);
+                try {
+                    books = JSON.parse(savedBooks);
+                    console.log("Loaded books from localStorage:", books.length);
+                } catch (e) {
+                    console.error("Error parsing saved books:", e);
+                    books = getSampleBooks();
+                }
             } else {
-                // Sample book data without fake comments
-                books = [
-                    {
-                        id: 1,
-                        title: "Mr. Romeo",
-                        author: "R. Tej Kumar Reddy",
-                        genre: "Crime", // Changed to Crime genre
-                        description: "It all starts here in Chapter 1: The Beginning of Darkness. Three friends in Tirupati thought they buried a secret on a lonely night. But someone was watching. Someone who believes that true love never dies—it just waits for revenge. 💔 Who is this mysterious 'Mister Romeo'? Why is he hunting them down one by one?",
-                        driveLink: "https://drive.google.com/file/d/1TRsv0crqfNbTWHvF3dpMfnnOJ8H9Gbac/view?usp=drive_link",
-                        coverImage: "https://drive.google.com/thumbnail?id=1hg1Jt6OgSSaQerLcWaT4WUsXC2EKeY58&sz=w1000",
-                        uploadDate: "2023-11-30",
-                        submissionTime: new Date("2023-11-30").getTime(),
-                        approved: true, // This sample book is pre-approved
-                        approvalTime: new Date("2023-11-30").getTime(),
-                        rating: 4.2,
-                        ratingsCount: 12,
-                        comments: [] // Empty comments array - no fake comments
-                    }
-                ];
-                saveBooks();
+                books = getSampleBooks();
+                console.log("Created sample books:", books.length);
             }
+            
+            // Save books to ensure they're properly stored
+            saveBooks();
             
             // Check admin login state
             checkAdminLogin();
+            
+            // Initial render of books
+            renderBooks();
             
             // Run auto-approval check
             checkAutoApproval();
         }
 
+        // Get sample books
+        function getSampleBooks() {
+            return [
+                {
+                    id: 1,
+                    title: "Mr. Romeo",
+                    author: "R. Tej Kumar Reddy",
+                    genre: "Crime",
+                    description: "It all starts here in Chapter 1: The Beginning of Darkness. Three friends in Tirupati thought they buried a secret on a lonely night. But someone was watching. Someone who believes that true love never dies—it just waits for revenge. 💔 Who is this mysterious 'Mister Romeo'? Why is he hunting them down one by one?",
+                    driveLink: "https://drive.google.com/file/d/1TRsv0crqfNbTWHvF3dpMfnnOJ8H9Gbac/view?usp=drive_link",
+                    coverImage: "https://drive.google.com/thumbnail?id=1hg1Jt6OgSSaQerLcWaT4WUsXC2EKeY58&sz=w1000",
+                    uploadDate: "2023-11-30",
+                    submissionTime: new Date("2023-11-30").getTime(),
+                    approved: true,
+                    approvalTime: new Date("2023-11-30").getTime(),
+                    rating: 4.2,
+                    ratingsCount: 12,
+                    comments: []
+                }
+            ];
+        }
+
         // Save books to localStorage
         function saveBooks() {
-            localStorage.setItem('tejKumarBooks', JSON.stringify(books));
+            try {
+                localStorage.setItem('tejKumarBooks', JSON.stringify(books));
+                console.log("Saved books to localStorage:", books.length);
+            } catch (e) {
+                console.error("Error saving books:", e);
+            }
         }
         
         // Check and auto-approve books older than 48 hours
         function checkAutoApproval() {
             const now = Date.now();
             let approvedCount = 0;
-            let nextPendingTime = null;
             
             books.forEach(book => {
                 if (!book.approved && book.submissionTime) {
@@ -2393,12 +2413,6 @@
                         approvedCount++;
                         
                         console.log(`Auto-approved book: ${book.title}`);
-                    } else {
-                        // Track the next book that will be approved
-                        const timeRemaining = APPROVAL_DELAY - timeSinceSubmission;
-                        if (!nextPendingTime || timeRemaining < nextPendingTime) {
-                            nextPendingTime = timeRemaining;
-                        }
                     }
                 }
             });
@@ -2408,7 +2422,9 @@
                 saveBooks();
                 renderBooks();
                 updateNextCheckTimer();
-                renderAdminLists();
+                if (isAdminLoggedIn) {
+                    renderAdminLists();
+                }
                 
                 // Show notification if on home page
                 if (document.getElementById('home').classList.contains('active') && approvedCount > 0) {
@@ -3227,6 +3243,7 @@
 
         // Render books in the library
         function renderBooks() {
+            console.log("Rendering books...");
             const approvedBookList = document.getElementById('approvedBookList');
             const pendingBookList = document.getElementById('pendingBookList');
             const bookListLibrary = document.getElementById('bookListLibrary');
@@ -3234,11 +3251,16 @@
             // Clear existing books
             approvedBookList.innerHTML = '';
             pendingBookList.innerHTML = '';
-            bookListLibrary.innerHTML = '';
+            if (bookListLibrary) {
+                bookListLibrary.innerHTML = '';
+            }
             
             // Separate approved and pending books
             const approvedBooks = books.filter(book => book.approved);
             const pendingBooks = books.filter(book => !book.approved);
+            
+            console.log("Approved books:", approvedBooks.length);
+            console.log("Pending books:", pendingBooks.length);
             
             // Sort books
             sortBooks('approved');
@@ -3257,9 +3279,11 @@
                     const bookCard = createBookCard(book, false);
                     approvedBookList.appendChild(bookCard);
                     
-                    // Clone for library section
-                    const libraryCard = createBookCard(book, false);
-                    bookListLibrary.appendChild(libraryCard);
+                    // Clone for library section if it exists
+                    if (bookListLibrary) {
+                        const libraryCard = createBookCard(book, false);
+                        bookListLibrary.appendChild(libraryCard);
+                    }
                 });
             }
             
@@ -3373,13 +3397,24 @@
 
         // Sort books
         function sortBooks(type = 'approved') {
-            let booksToSort = type === 'approved' ? 
-                books.filter(book => book.approved) : 
-                books;
+            console.log("Sorting books:", type);
+            
+            let booksToSort = [];
+            if (type === 'approved') {
+                booksToSort = books.filter(book => book.approved);
+            } else if (type === 'library') {
+                booksToSort = books.filter(book => book.approved);
+            } else {
+                booksToSort = [...books];
+            }
             
             const sortBy = type === 'approved' ? 
-                document.getElementById('sortBy').value : 
-                document.getElementById('sortByLibrary').value;
+                document.getElementById('sortBy')?.value : 
+                document.getElementById('sortByLibrary')?.value;
+            
+            if (!sortBy) return;
+            
+            console.log("Sorting by:", sortBy);
             
             booksToSort.sort((a, b) => {
                 switch(sortBy) {
@@ -3395,11 +3430,14 @@
                 }
             });
             
+            // Re-render books
             renderBooks();
         }
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
+            console.log("Page loaded, initializing...");
+            
             // Initialize theme first
             initializeTheme();
             
@@ -3414,6 +3452,8 @@
             
             // Update next check timer every minute
             setInterval(updateNextCheckTimer, 60000);
+            
+            console.log("Initialization complete!");
         });
     </script>
 </body>
